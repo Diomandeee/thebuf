@@ -12,6 +12,19 @@
     {
       "name": "Profile",
       "link": "/profile"
+    },
+    {
+      "name": "Explore",
+      "link": "/search"
+    },
+    {
+      "name": "Studio",
+      "link": "http://localhost:1420"
+    },
+
+    {
+      "name": "Blog",
+      "link": "https://blog.oceanprotocol.com"
     }
   ],
   "announcement": "[Lock your OCEAN](https://df.oceandao.org/) to get veOCEAN, earn rewards and curate data.",

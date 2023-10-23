@@ -12,7 +12,7 @@
   --brand-grey-lighter: #e2e2e2;
   --brand-grey-dimmed: #f7f7f7;
 
-  --brand-gradient: linear-gradient(to right bottom, #7b1173, #d58a27);
+  --brand-gradient: linear-gradient(to right bottom, #f7f7f7, #d58a27);
 
   --brand-alert-green: #5fb359;
   --brand-alert-red: #d80606;
@@ -24,7 +24,7 @@
 
   /* Only use these vars for most color referencing for easy light/dark mode */
   --font-color-text: #41474e;
-  --font-color-heading: #141414;
+  --font-color-heading: #41474e;
   --background-body: #fcfcfc;
   --background-body-transparent: rgba(255, 255, 255, 0.8);
   --background-content: #fff;

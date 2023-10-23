@@ -26,7 +26,7 @@ class Point {
 
 enum WaveColors {
   Violet = '#e000cf',
-  Pink = '#ff4092',
+  Pink = '#ff8a00',
   Grey = '#8b98a9'
 }
 

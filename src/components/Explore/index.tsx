@@ -10,6 +10,7 @@ import SectionQueryResult from './SectionQueryResult'
 import styles from './index.module.css'
 import Allocations from './Allocations'
 import MostViews from './MostViews'
+import SearchBar from '../Header/SearchBar'
 
 export default function HomePage(): ReactElement {
   const { chainIds } = useUserPreferences()
@@ -56,23 +57,23 @@ export default function HomePage(): ReactElement {
   return (
     <>
       <section className={styles.section}>
-        <h3>Your Bookmarks</h3>
-        <Bookmarks />
+        {/* <h3>Your Bookmarks</h3>
+        <Bookmarks /> */}
       </section>
 
-      <Allocations />
+      {/* <Allocations /> */}
 
-      <SectionQueryResult
+      {/* <SectionQueryResult
         title="Highest veOCEAN Allocations"
         query={queryMostAllocation}
-      />
+      /> */}
 
-      <SectionQueryResult title="Most Sales" query={queryMostSales} />
+      {/* <SectionQueryResult title="Most Sales" query={queryMostSales} /> */}
       {/* <MostViews /> */}
-      <TopSales title="Publishers With Most Sales" />
-      <TopTags title="Top Tags By Sales" />
+      {/* <TopSales title="Publishers With Most Sales" />
+      <TopTags title="Top Tags By Sales" /> */}
 
-      <SectionQueryResult
+      {/* <SectionQueryResult
         title="Recently Published"
         query={queryLatest}
         action={
@@ -80,7 +81,14 @@ export default function HomePage(): ReactElement {
             All datasets and algorithms →
           </Button>
         }
-      />
+      /> */}
+
+      <div className={styles.actions}>
+        {/* <SearchBar /> */}
+        {/* <Networks />
+  <Wallet />
+  <UserPreferences /> */}
+      </div>
     </>
   )
 }

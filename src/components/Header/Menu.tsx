@@ -50,9 +50,9 @@ export default function Menu(): ReactElement {
 
       <div className={styles.actions}>
         <SearchBar />
-        <Networks />
+        {/* <Networks />
         <Wallet />
-        <UserPreferences />
+        <UserPreferences /> */}
       </div>
     </nav>
   )
