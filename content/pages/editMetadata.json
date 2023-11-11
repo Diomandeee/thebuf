@@ -6,7 +6,7 @@
       {
         "name": "name",
         "label": "New Title",
-        "placeholder": "e.g. Shapes of Desert Plants",
+        "placeholder": "e.g. Shapes of  Plants",
         "help": "Enter a concise title.",
         "required": true
       },

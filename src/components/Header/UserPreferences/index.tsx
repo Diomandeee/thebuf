@@ -19,7 +19,7 @@ export default function UserPreferences(): ReactElement {
       content={
         <ul className={styles.preferencesDetails}>
           <Currency />
-          <Appearance darkMode={darkMode} />
+          {/* <Appearance darkMode={darkMode} /> */}
           <Debug />
         </ul>
       }

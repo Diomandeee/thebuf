@@ -1,7 +1,7 @@
 {
-  "siteTitle": "Chain Works",
+  "siteTitle": "Synergetic Studio",
   "siteTagline": "A realm where creativity knows no bounds",
-  "siteUrl": "https://market.oceanprotocol.com",
+  "siteUrl": "https://synergetic-studio.vercel.app/",
   "siteImage": "/share.png",
   "copyright": "All Rights Reserved. Powered by ",
   "menu": [
@@ -18,16 +18,16 @@
       "link": "/search"
     },
     {
-      "name": "Studio",
-      "link": "https://browser-iota.vercel.app/"
+      "name": "Gallaery",
+      "link": "/image"
     },
 
     {
-      "name": "Blog",
-      "link": "https://blog.oceanprotocol.com"
+      "name": "Imagine",
+      "link": "http://localhost:3000"
     }
   ],
-  "announcement": "[Lock your OCEAN](https://df.oceandao.org/) to get veOCEAN, earn rewards and curate data.",
+  "announcement": " ",
   "warning": {
     "ctd": "Please note that Compute-to-Data is still in alpha phase."
   }

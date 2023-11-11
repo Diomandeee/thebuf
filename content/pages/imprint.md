@@ -1,20 +1,16 @@
 ---
-title: Imprint
+title: How to contact us
 description: Thanks for using our product and services.
 ---
 
-Ocean Protocol Foundation Ltd.<br/>  
-The Commerze @ Irving<br/>
-1 Irving Place, 08-11<br/>
-369546 Singapore<br/>
-Singapore
+## Contact
 
-E-mail: [gdpr@oceanprotocol.com](mailto:gdpr@oceanprotocol.com)<br/>
-Phone: <br/>
+E-mail: <br/>
 
-Director: Bruce Pon
+## Address
 
-Company registered in Singapore<br/>
-Company Registration No.: 201729912W<br/>
-Commercial Register No.:<br/>
-VAT ID:<br/>
+Synergetic Dream Studio<br/>
+
+## Phone
+
++49 123 456 789<br/>
