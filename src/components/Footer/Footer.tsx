@@ -14,7 +14,7 @@ export default function Footer(): ReactElement {
 
   return (
     <footer className={styles.footer}>
-      <BuildId />
+      {/* <BuildId />
       <MarketStats />
 
       <div className={styles.grid}>
@@ -28,9 +28,9 @@ export default function Footer(): ReactElement {
             target="_blank"
           >
             Ocean Protocol <External className={styles.svg} />
-          </Button>
-        </div>
-      </div>
+          </Button> */}
+      {/* </div> */}
+      {/* </div> */}
     </footer>
   )
 }

@@ -1,30 +1,17 @@
 {
-  "siteTitle": "Synergetic Studio",
-  "siteTagline": "A realm where creativity knows no bounds",
+  "siteTitle": "Meaning Full Power",
+  "siteTagline": "A Guide to Harnessing Your True Potential",
   "siteUrl": "https://synergetic-studio.vercel.app/",
   "siteImage": "/share.png",
   "copyright": "All Rights Reserved. Powered by ",
   "menu": [
     {
-      "name": "Publish",
-      "link": "/publish/1"
+      "name": "Trading Cards",
+      "link": "card"
     },
     {
-      "name": "Profile",
-      "link": "/profile"
-    },
-    {
-      "name": "Explore",
-      "link": "/search"
-    },
-    {
-      "name": "Gallaery",
-      "link": "/image"
-    },
-
-    {
-      "name": "Imagine",
-      "link": "http://localhost:3000"
+      "name": "About",
+      "link": "/terms"
     }
   ],
   "announcement": " ",

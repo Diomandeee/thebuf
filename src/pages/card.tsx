@@ -1,45 +1,41 @@
 import React, { useState, useEffect } from 'react'
-import Page from '@shared/Page'
-import { useRouter } from 'next/router'
 import Gallery from 'react-photo-gallery'
 import Lightbox from 'react-image-lightbox'
 import 'react-image-lightbox/style.css'
-import { useMarketMetadata } from '@context/MarketMetadata'
 import { FullScreen, useFullScreenHandle } from 'react-full-screen'
 import { motion, AnimatePresence } from 'framer-motion'
-
 export default function PageHome() {
-  const router = useRouter()
-  const { siteContent } = useMarketMetadata()
   const fullScreenHandle = useFullScreenHandle()
-  const [hoveredImageIndex, setHoveredImageIndex] = useState(null)
-
-  const handleMouseEnter = (index) => {
-    setHoveredImageIndex(index)
-  }
-
-  const handleMouseLeave = () => {
-    setHoveredImageIndex(null)
-  }
 
   const generateImageUrls = (count) => {
-    const baseUrl =
-      'https://res.cloudinary.com/meaning-full-power/image/upload/v1700176272/Lifeislong/text_'
+    const baseBackUrl =
+      'https://res.cloudinary.com/meaning-full-power/image/upload/v1700176272/Lifeislong/card_backs/card_back_'
+    const baseFrontUrl =
+      'https://res.cloudinary.com/meaning-full-power/image/upload/v1700496325/Lifeislong/card_fronts/card_front_'
     const imagesArray = []
-    for (let i = 1; i < count; i++) {
+    for (let i = 1; i <= count; i++) {
       imagesArray.push({
-        src: `${baseUrl}${i}.png`,
-        width: 4,
-        height: 3
+        backSrc: `${baseBackUrl}${i}.png`,
+        frontSrc: `${baseFrontUrl}${i}.png`,
+        width: 12,
+        height: 9
       })
     }
     return imagesArray
   }
-
   const images = generateImageUrls(40)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [viewerIsOpen, setViewerIsOpen] = useState(false)
   const [viewMode, setViewMode] = useState('grid')
+  const [hoveredImage, setHoveredImage] = useState(null)
+
+  const handleMouseEnter = (index) => {
+    setHoveredImage(index)
+  }
+
+  const handleMouseLeave = () => {
+    setHoveredImage(null)
+  }
 
   const openLightbox = (event, { index }) => {
     setCurrentImageIndex(index)
@@ -119,36 +115,40 @@ export default function PageHome() {
   const renderGalleryView = () => (
     <>
       <Gallery
-        photos={images}
+        photos={images.map((image) => ({ ...image, src: image.backSrc }))}
         renderImage={({ index, photo }) => (
           <div
-            onMouseEnter={() => handleMouseEnter(index)}
-            onMouseLeave={handleMouseLeave}
             style={{
-              transform:
-                hoveredImageIndex === index ? 'scale(1.1)' : 'scale(1)',
+              transform: hoveredImage === index ? 'scale(1.1)' : 'scale(1)',
               transition: 'transform 0.3s ease',
-              margin: '5px', // spacing between images
-              border: '1px solid #ccc', // border around images
+              margin: '5px',
               display: 'inline-block',
-              boxSizing: 'border-box', // ensures that the border and padding are included in the width and height
-              width: imageContainerWidth // Set width for 3 images per row
+              boxSizing: 'border-box',
+              width: imageContainerWidth
             }}
           >
             <img
-              {...photo}
-              onClick={() => openLightbox(null, { index })}
+              src={hoveredImage === index ? photo.frontSrc : photo.backSrc}
               alt={`Image ${index}`}
+              style={{
+                width: '100%',
+                height: 'auto',
+                display: 'block'
+              }}
+              onMouseEnter={() => handleMouseEnter(index)}
+              onMouseLeave={handleMouseLeave}
+              onClick={() => openLightbox(null, { index })}
             />
           </div>
         )}
       />
       {viewerIsOpen && (
         <Lightbox
-          mainSrc={images[currentImageIndex].src}
-          nextSrc={images[(currentImageIndex + 1) % images.length].src}
+          mainSrc={images[currentImageIndex].frontSrc}
+          nextSrc={images[(currentImageIndex + 1) % images.length].frontSrc}
           prevSrc={
-            images[(currentImageIndex + images.length - 1) % images.length].src
+            images[(currentImageIndex - 1 + images.length) % images.length]
+              .frontSrc
           }
           onCloseRequest={closeLightbox}
           onMovePrevRequest={goToPreviousImage}
@@ -160,32 +160,45 @@ export default function PageHome() {
 
   return (
     <FullScreen handle={fullScreenHandle}>
-      <Page
-        title={siteContent?.siteTitle}
-        description={siteContent?.siteTagline}
-        uri={router.route}
-        headerCenter
+      <div
+        style={{ textAlign: 'center', marginBottom: '20px', padding: '20px' }}
       >
-        <div style={{ textAlign: 'center', marginBottom: '20px' }}></div>
-        {viewMode === 'slideshow' ? renderSlideshowView() : renderGalleryView()}
-        {fullScreenHandle.active && (
-          <div
-            style={{
-              position: 'absolute',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              width: '100%',
-              display: 'flex',
-              justifyContent: 'space-between',
-              padding: '0 20px'
-            }}
-          >
-            <button onClick={goToPreviousImage}>Previous</button>
-            <button onClick={goToNextImage}>Next</button>
-          </div>
-        )}
-        <div style={{ marginTop: '10px' }}></div>
-      </Page>
+        <h1 style={{ fontSize: '2.5em' }}>Life is Long</h1>
+        <p
+          style={{
+            fontSize: '1.2em',
+            color: '#8b98a9',
+            maxWidth: '600px', // Sets the maximum width of the paragraph
+            margin: '0 auto', // Centers the paragraph
+            lineHeight: '1.6' // Adjusts the line height for better readability
+          }}
+        >
+          Life is long is a multiplayer collectible digital trading card game
+          where players build their unique decks of emotional intelligence. This
+          includes daily mantras, daily challenges, and meaningful questions
+          collectible cards.
+        </p>
+      </div>
+      {/* Slideshow or Gallery View */}
+      {viewMode === 'slideshow' ? renderSlideshowView() : renderGalleryView()}
+      {/* Navigation Buttons */}
+      {fullScreenHandle.active && (
+        <div
+          style={{
+            position: 'absolute',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'space-between',
+            padding: '0 20px'
+          }}
+        >
+          <button onClick={goToPreviousImage}>Previous</button>
+          <button onClick={goToNextImage}>Next</button>
+        </div>
+      )}
+      <div style={{ marginTop: '10px' }}></div>
     </FullScreen>
   )
 }

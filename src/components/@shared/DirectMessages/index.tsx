@@ -23,19 +23,7 @@ const BodyContent = () => {
   }
 
   const message = () => {
-    return (
-      <>
-        <p>A new decentralized, encrypted private messaging is here!</p>
-        <p>
-          Engage with data publishers, get your algorithms whitelisted and
-          establish trust.
-        </p>
-        <p>
-          You&apos;ll be required to sign 2 transactions, one to connect to your
-          decentralized identity and the other to generate your encrypted key.
-        </p>
-      </>
-    )
+    return <></>
   }
 
   if (!accountId) {
@@ -59,9 +47,9 @@ const BodyContent = () => {
     return (
       <div className={styles.walletWrapper}>
         <div>
-          <h5>Sign your wallet to start messaging</h5>
+          <h5>Coming soon</h5>
           {message()}
-          <button
+          {/* <button
             className={`${walletStyles.button} ${walletStyles.initial}`}
             onClick={() =>
               checkOrbisConnection({
@@ -72,7 +60,7 @@ const BodyContent = () => {
             }
           >
             Sign <span>Wallet</span>
-          </button>
+          </button> */}
         </div>
       </div>
     )
