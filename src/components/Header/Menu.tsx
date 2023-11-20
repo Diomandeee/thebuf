@@ -1,14 +1,11 @@
 import React, { ReactElement } from 'react'
 import Link from 'next/link'
-import loadable from '@loadable/component'
 import Logo from '@shared/atoms/Logo'
 import UserPreferences from './UserPreferences'
-import Networks from './UserPreferences/Networks'
-import SearchBar from './SearchBar'
 import styles from './Menu.module.css'
 import { useRouter } from 'next/router'
 import { useMarketMetadata } from '@context/MarketMetadata'
-const Wallet = loadable(() => import('./Wallet'))
+// const Wallet = loadable(() => import('./Wallet'))
 
 declare type MenuItem = {
   name: string
@@ -49,9 +46,6 @@ export default function Menu(): ReactElement {
       </ul>
 
       <div className={styles.actions}>
-        {/* <SearchBar /> */}
-        {/* <Networks />
-        <Wallet /> */}
         <UserPreferences />
       </div>
     </nav>

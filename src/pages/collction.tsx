@@ -1,41 +1,50 @@
 import React, { useState, useEffect } from 'react'
+import Page from '@shared/Page'
+import { useRouter } from 'next/router'
 import Gallery from 'react-photo-gallery'
 import Lightbox from 'react-image-lightbox'
 import 'react-image-lightbox/style.css'
 import { FullScreen, useFullScreenHandle } from 'react-full-screen'
 import { motion, AnimatePresence } from 'framer-motion'
+
 export default function PageHome() {
+  const router = useRouter()
   const fullScreenHandle = useFullScreenHandle()
+  const [hoveredImageIndex, setHoveredImageIndex] = useState(null)
+  const title = 'Meaning Full Collection'
+  const description =
+    'Meaning Full Collection was created to keep the finger on the pulse of what feels like feeling good about one’s self, staying motivated and radiate a vibe of utmost positivity that bags your surroundings. When you look in the mirror, you get an instantaneous confidence boost along with a positive reminder of your strength and power and how far you have come. It’s all about realization of one’s capabilities as well as easing the path for people who is going through difficult times in their lives.'
+
+  const handleMouseEnter = (index) => {
+    setHoveredImageIndex(index)
+  }
+
+  const handleMouseLeave = () => {
+    setHoveredImageIndex(null)
+  }
 
   const generateImageUrls = (count) => {
-    const baseBackUrl =
-      'https://res.cloudinary.com/meaning-full-power/image/upload/v1700176272/Lifeislong/card_backs/card_back_'
-    const baseFrontUrl =
-      'https://res.cloudinary.com/meaning-full-power/image/upload/v1700496325/Lifeislong/card_fronts/card_front_'
+    const baseUrl =
+      'https://res.cloudinary.com/meaning-full-power/image/upload/v1700176272/Lifeislong/text_'
     const imagesArray = []
-    for (let i = 1; i <= count; i++) {
+    for (let i = 1; i < count; i++) {
       imagesArray.push({
-        backSrc: `${baseBackUrl}${i}.png`,
-        frontSrc: `${baseFrontUrl}${i}.png`,
-        width: 12,
-        height: 9
+        src: `${baseUrl}${i}.png`,
+        width: 4,
+        height: 3
       })
     }
     return imagesArray
   }
-  const images = generateImageUrls(39)
+
+  const images = generateImageUrls(40)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [viewerIsOpen, setViewerIsOpen] = useState(false)
   const [viewMode, setViewMode] = useState('grid')
-  const [hoveredImage, setHoveredImage] = useState(null)
-  const imageContainerWidth = 'calc(33.33% - 10px)' // Adjusts for 5px margin on each side
 
-  const handleMouseEnter = (index) => {
-    setHoveredImage(index)
-  }
-
-  const handleMouseLeave = () => {
-    setHoveredImage(null)
+  const openLightbox = (event, { index }) => {
+    setCurrentImageIndex(index)
+    setViewerIsOpen(true)
   }
 
   const closeLightbox = () => {
@@ -106,31 +115,31 @@ export default function PageHome() {
     </div>
   )
 
-  // Assuming that Gallery's photos prop accepts an array of objects with at least the src property.
-  // Define your custom photo type with additional properties
-  interface CustomPhoto {
-    src: string // Standard image source (used by Gallery)
-    frontSrc: string // Your custom property for the front image
-    backSrc: string // Your custom property for the back image
-    width: number // Standard width property (used by Gallery)
-    height: number // Standard height property (used by Gallery)
-    // Add any other properties required by your Gallery component
-  }
+  const imageContainerWidth = 'calc(33.33% - 10px)' // Adjusts for 5px margin on each side
+
   const renderGalleryView = () => (
     <>
       <Gallery
-        photos={images.map((image) => ({
-          ...image,
-          src: image.backSrc // Ensure that src is a string as expected by Gallery.
-        }))}
+        photos={images}
         renderImage={({ index, photo }) => {
-          // Use the CustomPhoto interface for the photo prop.
-          const customPhoto = photo as CustomPhoto
+          // If srcSet or sizes is not a string, it's converted to a valid string.
+          const validPhotoProps = {
+            ...photo,
+            srcSet: Array.isArray(photo.srcSet)
+              ? photo.srcSet.join(', ')
+              : photo.srcSet,
+            sizes: Array.isArray(photo.sizes)
+              ? photo.sizes.join(', ')
+              : photo.sizes // This line ensures sizes is a string
+          }
 
           return (
             <div
+              onMouseEnter={() => handleMouseEnter(index)}
+              onMouseLeave={handleMouseLeave}
               style={{
-                transform: hoveredImage === index ? 'scale(1.1)' : 'scale(1)',
+                transform:
+                  hoveredImageIndex === index ? 'scale(1.1)' : 'scale(1)',
                 transition: 'transform 0.3s ease',
                 margin: '5px',
                 display: 'inline-block',
@@ -139,19 +148,9 @@ export default function PageHome() {
               }}
             >
               <img
-                src={
-                  hoveredImage === index
-                    ? customPhoto.frontSrc
-                    : customPhoto.src
-                }
+                {...validPhotoProps}
+                onClick={() => openLightbox(null, { index })}
                 alt={`Image ${index}`}
-                style={{
-                  width: '100%',
-                  height: 'auto',
-                  display: 'block'
-                }}
-                onMouseEnter={() => handleMouseEnter(index)}
-                onMouseLeave={handleMouseLeave}
               />
             </div>
           )
@@ -159,11 +158,10 @@ export default function PageHome() {
       />
       {viewerIsOpen && (
         <Lightbox
-          mainSrc={images[currentImageIndex].frontSrc}
-          nextSrc={images[(currentImageIndex + 1) % images.length].frontSrc}
+          mainSrc={images[currentImageIndex].src}
+          nextSrc={images[(currentImageIndex + 1) % images.length].src}
           prevSrc={
-            images[(currentImageIndex - 1 + images.length) % images.length]
-              .frontSrc
+            images[(currentImageIndex - 1 + images.length) % images.length].src
           }
           onCloseRequest={closeLightbox}
           onMovePrevRequest={goToPreviousImage}
@@ -178,7 +176,7 @@ export default function PageHome() {
       <div
         style={{ textAlign: 'center', marginBottom: '20px', padding: '20px' }}
       >
-        <h1 style={{ fontSize: '2.5em' }}>Life is Long</h1>
+        <h1 style={{ fontSize: '2.5em' }}>Meaning Full Collection</h1>
         <p
           style={{
             fontSize: '1.2em',
@@ -188,15 +186,18 @@ export default function PageHome() {
             lineHeight: '1.6' // Adjusts the line height for better readability
           }}
         >
-          Life is long is a multiplayer collectible digital trading card game
-          where players build their unique decks of emotional intelligence. This
-          includes daily mantras, daily challenges, and meaningful questions
-          collectible cards.
+          Meaning Full Collection was created to keep the finger on the pulse of
+          what feels like feeling good about one’s self, staying motivated and
+          radiate a vibe of utmost positivity that bags your surroundings. When
+          you look in the mirror, you get an instantaneous confidence boost
+          along with a positive reminder of your strength and power and how far
+          you have come. It’s all about realization of one’s capabilities as
+          well as easing the path for people who is going through difficult
+          times in their lives.
         </p>
-      </div>
-      {/* Slideshow or Gallery View */}
+      </div>{' '}
+      <div style={{ textAlign: 'center', marginBottom: '20px' }}></div>
       {viewMode === 'slideshow' ? renderSlideshowView() : renderGalleryView()}
-      {/* Navigation Buttons */}
       {fullScreenHandle.active && (
         <div
           style={{
