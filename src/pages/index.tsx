@@ -36,7 +36,7 @@ export default function PageHome() {
     return imagesArray
   }
 
-  const images = generateImageUrls(40)
+  const images = generateImageUrls(39)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [viewerIsOpen, setViewerIsOpen] = useState(false)
   const [viewMode, setViewMode] = useState('grid')
