@@ -120,35 +120,48 @@ export default function PageHome() {
     <>
       <Gallery
         photos={images}
-        renderImage={({ index, photo }) => (
-          <div
-            onMouseEnter={() => handleMouseEnter(index)}
-            onMouseLeave={handleMouseLeave}
-            style={{
-              transform:
-                hoveredImageIndex === index ? 'scale(1.1)' : 'scale(1)',
-              transition: 'transform 0.3s ease',
-              margin: '5px', // spacing between images
-              border: '1px solid #ccc', // border around images
-              display: 'inline-block',
-              boxSizing: 'border-box', // ensures that the border and padding are included in the width and height
-              width: imageContainerWidth // Set width for 3 images per row
-            }}
-          >
-            <img
-              {...photo}
-              onClick={() => openLightbox(null, { index })}
-              alt={`Image ${index}`}
-            />
-          </div>
-        )}
+        renderImage={({ index, photo }) => {
+          // If srcSet or sizes is not a string, it's converted to a valid string.
+          const validPhotoProps = {
+            ...photo,
+            srcSet: Array.isArray(photo.srcSet)
+              ? photo.srcSet.join(', ')
+              : photo.srcSet,
+            sizes: Array.isArray(photo.sizes)
+              ? photo.sizes.join(', ')
+              : photo.sizes // This line ensures sizes is a string
+          }
+
+          return (
+            <div
+              onMouseEnter={() => handleMouseEnter(index)}
+              onMouseLeave={handleMouseLeave}
+              style={{
+                transform:
+                  hoveredImageIndex === index ? 'scale(1.1)' : 'scale(1)',
+                transition: 'transform 0.3s ease',
+                margin: '5px',
+                border: '1px solid #ccc',
+                display: 'inline-block',
+                boxSizing: 'border-box',
+                width: imageContainerWidth
+              }}
+            >
+              <img
+                {...validPhotoProps}
+                onClick={() => openLightbox(null, { index })}
+                alt={`Image ${index}`}
+              />
+            </div>
+          )
+        }}
       />
       {viewerIsOpen && (
         <Lightbox
           mainSrc={images[currentImageIndex].src}
           nextSrc={images[(currentImageIndex + 1) % images.length].src}
           prevSrc={
-            images[(currentImageIndex + images.length - 1) % images.length].src
+            images[(currentImageIndex - 1 + images.length) % images.length].src
           }
           onCloseRequest={closeLightbox}
           onMovePrevRequest={goToPreviousImage}

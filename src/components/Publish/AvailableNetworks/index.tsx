@@ -4,7 +4,6 @@ import Network from './Network'
 import useNetworkMetadata, {
   filterNetworksByType
 } from '@hooks/useNetworkMetadata'
-import content from '../../../../content/publish/index.json'
 import { useMarketMetadata } from '@context/MarketMetadata'
 
 export default function AvailableNetworks(): ReactElement {
@@ -35,7 +34,6 @@ export default function AvailableNetworks(): ReactElement {
 
   return (
     <div className={styles.content}>
-      {content.tooltipAvailableNetworks}
       {networkCategories.map(
         (networkCategory) =>
           networkCategory.data.length > 0 && (

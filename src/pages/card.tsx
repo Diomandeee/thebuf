@@ -28,6 +28,7 @@ export default function PageHome() {
   const [viewerIsOpen, setViewerIsOpen] = useState(false)
   const [viewMode, setViewMode] = useState('grid')
   const [hoveredImage, setHoveredImage] = useState(null)
+  const imageContainerWidth = 'calc(33.33% - 10px)' // Adjusts for 5px margin on each side
 
   const handleMouseEnter = (index) => {
     setHoveredImage(index)
@@ -110,37 +111,57 @@ export default function PageHome() {
     </div>
   )
 
-  const imageContainerWidth = 'calc(33.33% - 10px)' // Adjusts for 5px margin on each side
-
+  // Assuming that Gallery's photos prop accepts an array of objects with at least the src property.
+  // Define your custom photo type with additional properties
+  interface CustomPhoto {
+    src: string // Standard image source (used by Gallery)
+    frontSrc: string // Your custom property for the front image
+    backSrc: string // Your custom property for the back image
+    width: number // Standard width property (used by Gallery)
+    height: number // Standard height property (used by Gallery)
+    // Add any other properties required by your Gallery component
+  }
   const renderGalleryView = () => (
     <>
       <Gallery
-        photos={images.map((image) => ({ ...image, src: image.backSrc }))}
-        renderImage={({ index, photo }) => (
-          <div
-            style={{
-              transform: hoveredImage === index ? 'scale(1.1)' : 'scale(1)',
-              transition: 'transform 0.3s ease',
-              margin: '5px',
-              display: 'inline-block',
-              boxSizing: 'border-box',
-              width: imageContainerWidth
-            }}
-          >
-            <img
-              src={hoveredImage === index ? photo.frontSrc : photo.backSrc}
-              alt={`Image ${index}`}
+        photos={images.map((image) => ({
+          ...image,
+          src: image.backSrc // Ensure that src is a string as expected by Gallery.
+        }))}
+        renderImage={({ index, photo }) => {
+          // Use the CustomPhoto interface for the photo prop.
+          const customPhoto = photo as CustomPhoto
+
+          return (
+            <div
               style={{
-                width: '100%',
-                height: 'auto',
-                display: 'block'
+                transform: hoveredImage === index ? 'scale(1.1)' : 'scale(1)',
+                transition: 'transform 0.3s ease',
+                margin: '5px',
+                display: 'inline-block',
+                boxSizing: 'border-box',
+                width: imageContainerWidth
               }}
-              onMouseEnter={() => handleMouseEnter(index)}
-              onMouseLeave={handleMouseLeave}
-              onClick={() => openLightbox(null, { index })}
-            />
-          </div>
-        )}
+            >
+              <img
+                src={
+                  hoveredImage === index
+                    ? customPhoto.frontSrc
+                    : customPhoto.src
+                }
+                alt={`Image ${index}`}
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  display: 'block'
+                }}
+                onMouseEnter={() => handleMouseEnter(index)}
+                onMouseLeave={handleMouseLeave}
+                onClick={() => openLightbox(null, { index })}
+              />
+            </div>
+          )
+        }}
       />
       {viewerIsOpen && (
         <Lightbox
