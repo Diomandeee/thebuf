@@ -23,7 +23,14 @@ export default function IndexPage() {
         uri={router.route}
         headerCenter
       >
-        <section className="hero"></section>
+        <iframe
+          title="Meaning Full Power"
+          src="https://www.synergetic.life"
+          width="100%"
+          height="800"
+          frameBorder="0"
+          allowFullScreen
+        ></iframe>
 
         {bookThemes.map((theme) => (
           <section
@@ -35,7 +42,6 @@ export default function IndexPage() {
             <p>{theme.description}</p>
           </section>
         ))}
-
         <div
           className="call-to-action"
           style={{

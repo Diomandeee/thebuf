@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import Page from '@shared/Page'
-import { useRouter } from 'next/router'
 import Gallery from 'react-photo-gallery'
 import Lightbox from 'react-image-lightbox'
 import 'react-image-lightbox/style.css'
@@ -8,12 +6,8 @@ import { FullScreen, useFullScreenHandle } from 'react-full-screen'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function PageHome() {
-  const router = useRouter()
   const fullScreenHandle = useFullScreenHandle()
   const [hoveredImageIndex, setHoveredImageIndex] = useState(null)
-  const title = 'Meaning Full Collection'
-  const description =
-    'Meaning Full Collection was created to keep the finger on the pulse of what feels like feeling good about one’s self, staying motivated and radiate a vibe of utmost positivity that bags your surroundings. When you look in the mirror, you get an instantaneous confidence boost along with a positive reminder of your strength and power and how far you have come. It’s all about realization of one’s capabilities as well as easing the path for people who is going through difficult times in their lives.'
 
   const handleMouseEnter = (index) => {
     setHoveredImageIndex(index)
