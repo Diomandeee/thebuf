@@ -180,14 +180,12 @@ export default function PageHome() {
             lineHeight: '1.6' // Adjusts the line height for better readability
           }}
         >
-          Meaning Full Collection was created to keep the finger on the pulse of
-          what feels like feeling good about one’s self, staying motivated and
-          radiate a vibe of utmost positivity that bags your surroundings. When
-          you look in the mirror, you get an instantaneous confidence boost
-          along with a positive reminder of your strength and power and how far
-          you have come. It’s all about realization of one’s capabilities as
-          well as easing the path for people who is going through difficult
-          times in their lives.
+          Meaning Full Collection works as an ultimate motivational boost to
+          keep you working by lifting your spirits and spiking up your
+          confidence. This collection of Poems, Questions and Essay is all about
+          realizing your worth and helping to revive faith in yourself. It is an
+          resource for ramping up your capacity to face challenges and
+          tribulations with the utmost faith and confidence. .
         </p>
       </div>{' '}
       <div style={{ textAlign: 'center', marginBottom: '20px' }}></div>
