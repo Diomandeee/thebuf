@@ -187,7 +187,7 @@ export default function PageHome() {
           resource for ramping up your capacity to face challenges and
           tribulations with the utmost faith and confidence. .
         </p>
-      </div>{' '}
+      </div>
       <div style={{ textAlign: 'center', marginBottom: '20px' }}></div>
       {viewMode === 'slideshow' ? renderSlideshowView() : renderGalleryView()}
       {fullScreenHandle.active && (
