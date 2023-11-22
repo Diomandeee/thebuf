@@ -30,6 +30,7 @@ export default function IndexPage() {
           height="800"
           frameBorder="0"
           allowFullScreen
+          style={{ borderRadius: '15px' }} // Added rounded borders
         ></iframe>
 
         {bookThemes.map((theme) => (
