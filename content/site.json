@@ -1,10 +1,29 @@
 {
-  "siteTitle": "Synergetic Studio",
-  "siteTagline": "A realm where creativity knows no bounds",
+  "siteTitle": "Meaning Full Power",
+  "siteTagline": "A Guide to Harnessing Your True Potential",
   "siteUrl": "https://synergetic-studio.vercel.app/",
   "siteImage": "/share.png",
   "copyright": "All Rights Reserved. Powered by ",
-  "menu": [],
+  "menu": [
+    {
+      "name": "Home",
+      "link": "/"
+    },
+    {
+      "name": "Card",
+      "link": "/card"
+    },
+    {
+      "name": "Collection",
+      "link": "/collection"
+    },
+
+    {
+      "name": "Contact",
+      "link": "/contact"
+    }
+  ],
+
   "announcement": " ",
   "warning": {
     "ctd": "Please note that Compute-to-Data is still in alpha phase."

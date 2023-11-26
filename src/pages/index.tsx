@@ -27,7 +27,7 @@ export default function IndexPage() {
           title="Meaning Full Power"
           src="https://www.synergetic.life"
           width="100%"
-          height="300"
+          height="700"
           frameBorder="0"
           allowFullScreen
           style={{ borderRadius: '15px' }} // Added rounded borders
@@ -43,66 +43,20 @@ export default function IndexPage() {
             <p>{theme.description}</p>
           </section>
         ))}
-
-        <div className="call-to-action">
-          <div
-            className="call-to-action"
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginBottom: '100px',
-              marginTop: '100px'
-            }}
+        <div
+          className="call-to-action"
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <Button
+            style="primary"
+            to="https://www.amazon.com/Meaning-Full-Power-Harnessing-Potential/dp/B098HSP8Q9"
           >
-            <Button
-              style="primary"
-              to="https://www.amazon.com/Meaning-Full-Power-Harnessing-Potential/dp/B098HSP8Q9"
-            >
-              Explore the Book on Amazon
-            </Button>
-            {/* Add more buttons here with similar margin styles */}
-          </div>
-
-          <iframe
-            title="Meaning Full Power"
-            src="https://www.synergetic.life"
-            width="100%"
-            height="300"
-            frameBorder="0"
-            allowFullScreen
-            style={{ borderRadius: '15px' }} // Added rounded borders
-          ></iframe>
-        </div>
-        <div className="call-to-action">
-          <div
-            className="call-to-action"
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginBottom: '100px',
-              marginTop: '100px'
-            }}
-          >
-            <Button
-              style="primary"
-              to="https://www.amazon.com/Meaning-Full-Power-Harnessing-Potential/dp/B098HSP8Q9"
-            >
-              Explore the Book on Amazon
-            </Button>
-            {/* Add more buttons here with similar margin styles */}
-          </div>
-
-          <iframe
-            title="Meaning Full Power"
-            src="https://www.synergetic.life"
-            width="100%"
-            height="300"
-            frameBorder="0"
-            allowFullScreen
-            style={{ borderRadius: '15px' }} // Added rounded borders
-          ></iframe>
+            Explore the Book on Amazon
+          </Button>
         </div>
       </Page>
     </>
