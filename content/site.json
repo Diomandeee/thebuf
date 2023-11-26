@@ -9,10 +9,7 @@
       "name": "Home",
       "link": "/"
     },
-    {
-      "name": "Card",
-      "link": "/card"
-    },
+
     {
       "name": "Collection",
       "link": "/collection"
