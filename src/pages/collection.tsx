@@ -52,7 +52,7 @@ export default function PageHome() {
         setCurrentImageIndex(
           (currentIndex) => (currentIndex + 1) % images.length
         )
-      }, 15000)
+      }, 30000)
     }
     return () => {
       if (interval) clearInterval(interval)

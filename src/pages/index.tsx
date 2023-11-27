@@ -27,7 +27,7 @@ export default function IndexPage() {
           title="Meaning Full Power"
           src="https://www.synergetic.life"
           width="100%"
-          height="700"
+          height="600"
           frameBorder="0"
           allowFullScreen
           style={{ borderRadius: '15px' }} // Added rounded borders
