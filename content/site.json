@@ -6,6 +6,11 @@
   "copyright": "All Rights Reserved. Powered by ",
   "menu": [
     {
+      "name": "Home",
+      "link": "/"
+    },
+
+    {
       "name": "Trading Cards",
       "link": "/card"
     },
