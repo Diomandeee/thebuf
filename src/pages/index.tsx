@@ -17,17 +17,34 @@ export default function IndexPage() {
       <Head>
         <title>{title}</title>
       </Head>
+
       <Page
         title={siteContent?.siteTitle}
         description={siteContent?.siteTagline}
         uri={router.route}
         headerCenter
       >
+        <div
+          className="hero"
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: '20px' // Adjust the margin as needed
+          }}
+        >
+          <Button
+            style="primary"
+            to="https://www.amazon.com/Meaning-Full-Power-Harnessing-Potential/dp/B098HSP8Q9"
+          >
+            Explore the Book on Amazon
+          </Button>
+        </div>
         <iframe
           title="Meaning Full Power"
           src="https://www.synergetic.life"
           width="100%"
-          height="600"
+          height="700"
           frameBorder="0"
           allowFullScreen
           style={{ borderRadius: '15px' }} // Added rounded borders
@@ -43,21 +60,6 @@ export default function IndexPage() {
             <p>{theme.description}</p>
           </section>
         ))}
-        <div
-          className="call-to-action"
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
-          <Button
-            style="primary"
-            to="https://www.amazon.com/Meaning-Full-Power-Harnessing-Potential/dp/B098HSP8Q9"
-          >
-            Explore the Book on Amazon
-          </Button>
-        </div>
       </Page>
     </>
   )

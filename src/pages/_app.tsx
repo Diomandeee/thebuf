@@ -6,14 +6,12 @@ import PricesProvider from '@context/Prices'
 import UrqlProvider from '@context/UrqlProvider'
 import ConsentProvider from '@context/CookieConsent'
 import App from '../../src/components/App'
-import { OrbisProvider } from '@context/DirectMessages'
 import '@oceanprotocol/typographies/css/ocean-typo.css'
 import '../stylesGlobal/styles.css'
 import Decimal from 'decimal.js'
 import MarketMetadataProvider from '@context/MarketMetadata'
 import { WagmiConfig } from 'wagmi'
-import { ConnectKitProvider } from 'connectkit'
-import { connectKitTheme, wagmiClient } from '@utils/wallet'
+import { wagmiClient } from '@utils/wallet'
 import posthog from 'posthog-js'
 import { PostHogProvider } from 'posthog-js/react'
 import { useRouter } from 'next/router'
@@ -43,28 +41,21 @@ function MyApp({ Component, pageProps }: AppProps): ReactElement {
   return (
     <>
       <WagmiConfig client={wagmiClient}>
-        <ConnectKitProvider
-          options={{ initialChainId: 0 }}
-          customTheme={connectKitTheme}
-        >
-          <MarketMetadataProvider>
-            <UrqlProvider>
-              <UserPreferencesProvider>
-                <PricesProvider>
-                  <ConsentProvider>
-                    <OrbisProvider>
-                      <PostHogProvider client={posthog}>
-                        <App>
-                          <Component {...pageProps} />
-                        </App>
-                      </PostHogProvider>
-                    </OrbisProvider>
-                  </ConsentProvider>
-                </PricesProvider>
-              </UserPreferencesProvider>
-            </UrqlProvider>
-          </MarketMetadataProvider>
-        </ConnectKitProvider>
+        <MarketMetadataProvider>
+          <UrqlProvider>
+            <UserPreferencesProvider>
+              <PricesProvider>
+                <ConsentProvider>
+                  <PostHogProvider client={posthog}>
+                    <App>
+                      <Component {...pageProps} />
+                    </App>
+                  </PostHogProvider>
+                </ConsentProvider>
+              </PricesProvider>
+            </UserPreferencesProvider>
+          </UrqlProvider>
+        </MarketMetadataProvider>
       </WagmiConfig>
     </>
   )

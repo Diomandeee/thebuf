@@ -4,7 +4,7 @@
     "fields": [
       {
         "name": "nft",
-        "label": " Chain ",
+        "label": "Chain ",
         "type": "nft",
         "required": true
       },
