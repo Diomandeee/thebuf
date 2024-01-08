@@ -6,8 +6,12 @@
   "copyright": "All Rights Reserved. Powered by ",
   "menu": [
     {
-      "name": "Contact",
-      "link": "/contact"
+      "name": "Serenity Soother",
+      "link": "/collection"
+    },
+    {
+      "name": "Trading Card",
+      "link": "/card"
     }
   ],
 
