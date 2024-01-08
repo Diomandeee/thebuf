@@ -44,7 +44,7 @@ export default function IndexPage() {
           title="Meaning Full Power"
           src="https://www.synergetic.life"
           width="100%"
-          height="500"
+          height="800"
           frameBorder="20"
           allowFullScreen
           style={{ borderRadius: '20px' }}
