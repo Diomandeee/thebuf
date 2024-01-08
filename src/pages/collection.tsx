@@ -165,7 +165,46 @@ export default function PageHome() {
         </p>
       </div>
       <div style={{ textAlign: 'center' }}></div>
-      {viewMode === 'slideshow' ? renderSlideshowView() : renderGalleryView()}
+      {viewMode === 'slideshow' ? (
+        <div
+          style={{
+            position: 'relative',
+            width: '100%',
+            height: '100vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <video
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover'
+            }}
+            src={media[currentMediaIndex].src}
+            autoPlay
+            controls
+            loop
+          />
+          <div
+            style={{
+              position: 'absolute',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'space-between',
+              padding: '0 20px'
+            }}
+          >
+            <button onClick={goToPreviousMedia}>Previous</button>
+            <button onClick={goToNextMedia}>Next</button>
+          </div>
+        </div>
+      ) : (
+        renderGalleryView()
+      )}
       {fullScreenHandle.active && (
         <div
           style={{
