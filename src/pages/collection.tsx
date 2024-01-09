@@ -1,90 +1,63 @@
 import React, { useState, useEffect } from 'react'
+import Gallery from 'react-photo-gallery'
+import Lightbox from 'react-image-lightbox'
+import 'react-image-lightbox/style.css'
 import { FullScreen, useFullScreenHandle } from 'react-full-screen'
-// Define your media array here
-const MEDIA_LIST = [
-  {
-    src: 'https://res.cloudinary.com/meaning-full-power/video/upload/v1704125231/473fb09a-67e1-4cf3-af45-7313ce71d83f_looped_su3bqy.mp4',
-    type: 'video',
-    title: 'Serenity in Motion',
-    description: 'A captivating view of nature’s tranquility.'
-  },
-  {
-    src: 'https://res.cloudinary.com/meaning-full-power/video/upload/v1704727160/ss/image_1.mp4',
-    type: 'video',
-    title: 'The Calm Lake',
-    description: 'Experience the serene and peaceful waters.'
-  },
-  {
-    src: 'https://res.cloudinary.com/meaning-full-power/video/upload/v1702344094/ss/image_2.mp4',
-    type: 'video',
-    title: 'Mountain Zen',
-    description: 'Majestic mountains and their calming essence.'
-  },
-  {
-    src: 'https://res.cloudinary.com/meaning-full-power/video/upload/v1704727007/ss/image_3.mp4',
-    type: 'video',
-    title: 'Forest Whisper',
-    description: 'The soothing whispers of the forest breeze.'
-  },
-  {
-    src: 'https://res.cloudinary.com/meaning-full-power/video/upload/v1702344094/ss/image_4.mp4',
-    type: 'video',
-    title: 'Ocean’s Melody',
-    description: 'The rhythmic melody of ocean waves.'
-  },
-  {
-    src: 'https://res.cloudinary.com/meaning-full-power/video/upload/v1702344094/ss/image_5.mp4',
-    type: 'video',
-    title: 'Sunset Splendor',
-    description: 'Witness the splendid dance of colors at sunset.'
-  },
-  {
-    src: 'https://res.cloudinary.com/meaning-full-power/video/upload/v1702344094/ss/image_6.mp4',
-    type: 'video',
-    title: 'Sunset Splendor',
-    description: 'Witness the splendid dance of colors at sunset.'
-  },
-  {
-    src: 'https://res.cloudinary.com/meaning-full-power/video/upload/v1702344094/ss/image_7.mp4',
-    type: 'video',
-    title: 'Sunset Splendor',
-    description: 'Witness the splendid dance of colors at sunset.'
-  },
-  {
-    src: 'https://res.cloudinary.com/meaning-full-power/video/upload/v1702344094/ss/image_8.mp4',
-    type: 'video',
-    title: 'Sunset Splendor',
-    description: 'Witness the splendid dance of colors at sunset.'
-  }
-]
+import { motion, AnimatePresence } from 'framer-motion'
 
 export default function PageHome() {
   const fullScreenHandle = useFullScreenHandle()
-  const [currentMediaIndex, setCurrentMediaIndex] = useState(0)
-  const [viewMode, setViewMode] = useState('grid')
+  const [hoveredImageIndex, setHoveredImageIndex] = useState(null)
 
-  const generateMediaUrls = () => {
-    return MEDIA_LIST.map((media) => ({
-      src: media.src,
-      type: media.type
-    }))
+  const handleMouseEnter = (index) => {
+    setHoveredImageIndex(index)
   }
 
-  const media = generateMediaUrls()
+  const handleMouseLeave = () => {
+    setHoveredImageIndex(null)
+  }
+
+  const generateImageUrls = (count) => {
+    const baseUrl =
+      'https://res.cloudinary.com/meaning-full-power/image/upload/v1700176272/Lifeislong/text_'
+    const imagesArray = []
+    for (let i = 1; i < count; i++) {
+      imagesArray.push({
+        src: `${baseUrl}${i}.png`,
+        width: 4,
+        height: 3
+      })
+    }
+    return imagesArray
+  }
+
+  const images = generateImageUrls(40)
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [viewerIsOpen, setViewerIsOpen] = useState(false)
+  const [viewMode, setViewMode] = useState('grid')
+
+  const openLightbox = (event, { index }) => {
+    setCurrentImageIndex(index)
+    setViewerIsOpen(true)
+  }
+
+  const closeLightbox = () => {
+    setViewerIsOpen(false)
+  }
 
   useEffect(() => {
     let interval
     if (viewMode === 'grid') {
       interval = setInterval(() => {
-        setCurrentMediaIndex(
-          (currentIndex) => (currentIndex + 1) % media.length
+        setCurrentImageIndex(
+          (currentIndex) => (currentIndex + 1) % images.length
         )
       }, 30000)
     }
     return () => {
       if (interval) clearInterval(interval)
     }
-  }, [viewMode, media.length])
+  }, [viewMode, images.length])
 
   useEffect(() => {
     const handleResize = () => {
@@ -97,51 +70,98 @@ export default function PageHome() {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  const goToPreviousMedia = () => {
-    setCurrentMediaIndex((currentMediaIndex - 1 + media.length) % media.length)
+  const goToPreviousImage = () => {
+    setCurrentImageIndex(
+      (currentImageIndex - 1 + images.length) % images.length
+    )
   }
 
-  const goToNextMedia = () => {
-    setCurrentMediaIndex((currentMediaIndex + 1) % media.length)
+  const goToNextImage = () => {
+    setCurrentImageIndex((currentImageIndex + 1) % images.length)
   }
+
+  const renderSlideshowView = () => (
+    <div
+      style={{
+        width: '100%',
+        height: '100%',
+        position: 'relative'
+      }}
+    >
+      <AnimatePresence initial={false}>
+        <motion.img
+          key={currentImageIndex}
+          src={images[currentImageIndex].src}
+          alt={`Image ${currentImageIndex}`}
+          onClick={() => setViewMode('grid')}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1 }}
+          style={{
+            width: '1080px',
+            height: '1000px',
+            objectFit: 'cover',
+            backgroundColor: 'transparent' // Ensure the image has no dark background
+          }}
+        />
+      </AnimatePresence>
+    </div>
+  )
+
+  const imageContainerWidth = 'calc(33.33% - 10px)' // Adjusts for 5px margin on each side
 
   const renderGalleryView = () => (
     <>
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          justifyContent: 'space-around'
-        }}
-      >
-        {media.map((item, index) => (
-          <div
-            key={index}
-            style={{
-              width: '400px',
-              margin: '10px',
-              marginBottom: '40px',
-              cursor: 'pointer',
-              backgroundColor: '#fff', // Card background color
-              boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)', // Adds shadow for card effect
-              transition: '0.3s',
-              borderRadius: '5px', // Optional: for rounded corners
-              overflow: 'hidden' // Ensures video stays within the card boundaries
-            }}
-          >
-            <video width="100%" height="auto" controls>
-              <source src={item.src} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-            {/* Optional: Add a footer or header for the card */}
-            <div style={{ padding: '10px' }}>
-              <h4>{MEDIA_LIST[index].title}</h4> {/* Dynamic video title */}
-              <p>{MEDIA_LIST[index].description}</p>{' '}
-              {/* Dynamic video description */}
+      <Gallery
+        photos={images}
+        renderImage={({ index, photo }) => {
+          // If srcSet or sizes is not a string, it's converted to a valid string.
+          const validPhotoProps = {
+            ...photo,
+            srcSet: Array.isArray(photo.srcSet)
+              ? photo.srcSet.join(', ')
+              : photo.srcSet,
+            sizes: Array.isArray(photo.sizes)
+              ? photo.sizes.join(', ')
+              : photo.sizes // This line ensures sizes is a string
+          }
+
+          return (
+            <div
+              onMouseEnter={() => handleMouseEnter(index)}
+              onMouseLeave={handleMouseLeave}
+              style={{
+                transform:
+                  hoveredImageIndex === index ? 'scale(1.1)' : 'scale(1)',
+                transition: 'transform 0.3s ease',
+                margin: '5px',
+                display: 'inline-block',
+                boxSizing: 'border-box',
+                width: imageContainerWidth
+              }}
+            >
+              <img
+                {...validPhotoProps}
+                onClick={() => openLightbox(null, { index })}
+                alt={`Image ${index}`}
+              />
             </div>
-          </div>
-        ))}
-      </div>
+          )
+        }}
+      />
+      {viewerIsOpen && (
+        <Lightbox
+          mainSrc={images[currentImageIndex].src}
+          nextSrc={images[(currentImageIndex + 1) % images.length].src}
+          prevSrc={
+            images[(currentImageIndex - 1 + images.length) % images.length].src
+          }
+          onCloseRequest={closeLightbox}
+          onMovePrevRequest={goToPreviousImage}
+          onMoveNextRequest={goToNextImage}
+        />
+      )}
     </>
   )
 
@@ -150,65 +170,30 @@ export default function PageHome() {
       <div
         style={{ textAlign: 'center', marginBottom: '20px', padding: '20px' }}
       >
-        <h1 style={{ fontSize: '2.5em' }}>Serenity Soother</h1>
+        <h1 style={{ fontSize: '2.5em' }}>Meaning Full Collection</h1>
         <p
           style={{
             fontSize: '1.2em',
             color: '#8b98a9',
-            maxWidth: '600px',
-            margin: '0 auto',
-            lineHeight: '1.6'
+            maxWidth: '600px', // Sets the maximum width of the paragraph
+            margin: '0 auto', // Centers the paragraph
+            lineHeight: '1.6' // Adjusts the line height for better readability
           }}
         >
-          Welcome to Serenity Soother. Dive into a world where each script and
-          image is a stepping stone towards inner peace and self-realization
+          Meaning Full Collection works as an ultimate motivational boost to
+          keep you working by lifting your spirits and spiking up your
+          confidence. This collection of Poems, Questions and Essay is all about
+          realizing your worth and helping to revive faith in yourself. It is an
+          resource for ramping up your capacity to face challenges and
+          tribulations with the utmost faith and confidence. .
         </p>
       </div>
-      <div style={{ textAlign: 'center' }}></div>
-      {viewMode === 'slideshow' ? (
-        <div
-          style={{
-            position: 'relative',
-            width: '100%',
-            height: '100vh',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
-          <video
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover'
-            }}
-            src={media[currentMediaIndex].src}
-            autoPlay
-            controls
-            loop
-          />
-          <div
-            style={{
-              position: 'absolute',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              width: '100%',
-              display: 'flex',
-              justifyContent: 'space-between',
-              padding: '0 20px'
-            }}
-          >
-            <button onClick={goToPreviousMedia}>Previous</button>
-            <button onClick={goToNextMedia}>Next</button>
-          </div>
-        </div>
-      ) : (
-        renderGalleryView()
-      )}
+      <div style={{ textAlign: 'center', marginBottom: '20px' }}></div>
+      {viewMode === 'slideshow' ? renderSlideshowView() : renderGalleryView()}
       {fullScreenHandle.active && (
         <div
           style={{
-            position: 'relative',
+            position: 'absolute',
             top: '50%',
             transform: 'translateY(-50%)',
             width: '100%',
@@ -217,8 +202,8 @@ export default function PageHome() {
             padding: '0 20px'
           }}
         >
-          <button onClick={goToPreviousMedia}>Previous</button>
-          <button onClick={goToNextMedia}>Next</button>
+          <button onClick={goToPreviousImage}>Previous</button>
+          <button onClick={goToNextImage}>Next</button>
         </div>
       )}
       <div style={{ marginTop: '10px' }}></div>

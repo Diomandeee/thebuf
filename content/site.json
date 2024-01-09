@@ -7,11 +7,11 @@
   "menu": [
     {
       "name": "Serenity Soother",
-      "link": "/collection"
+      "link": "/serenity"
     },
     {
-      "name": "Trading Card",
-      "link": "/card"
+      "name": "Collection",
+      "link": "/collection"
     }
   ],
 
