@@ -4,16 +4,7 @@
   "siteUrl": "https://synergetic-studio.vercel.app/",
   "siteImage": "/share.png",
   "copyright": "All Rights Reserved. Powered by ",
-  "menu": [
-    {
-      "name": "Serenity Soother",
-      "link": "/serenity"
-    },
-    {
-      "name": "Collection",
-      "link": "/collection"
-    }
-  ],
+  "menu": [],
 
   "announcement": " ",
   "warning": {
