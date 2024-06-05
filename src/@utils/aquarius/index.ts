@@ -1,7 +1,7 @@
 import { Asset, LoggerInstance } from '@oceanprotocol/lib'
 import { AssetSelectionAsset } from '@shared/FormInput/InputElement/AssetSelection'
 import axios, { CancelToken, AxiosResponse } from 'axios'
-import { OrdersData_orders as OrdersData } from '../../@types/subgraph/OrdersData'
+// import { OrdersData_orders as OrdersData } from '../../@types/subgraph/OrdersData'
 import { metadataCacheUri } from '../../../app.config'
 import {
   SortDirectionOptions,
@@ -387,7 +387,7 @@ export async function getUserSales(
 
 export async function getDownloadAssets(
   dtList: string[],
-  tokenOrders: OrdersData[],
+  tokenOrders: any[],
   chainIds: number[],
   cancelToken: CancelToken,
   ignoreState = false

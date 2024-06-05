@@ -7,17 +7,10 @@ import React, {
   useEffect,
   useState
 } from 'react'
-import { OpcQuery } from '../../../src/@types/subgraph/OpcQuery'
-import { OperationResult } from 'urql'
-import { opcQuery } from './_queries'
 import { MarketMetadataProviderValue, OpcFee } from './_types'
 import siteContent from '../../../content/site.json'
 import appConfig from '../../../app.config'
-import {
-  fetchData,
-  getQueryContext,
-  getOpcsApprovedTokens
-} from '@utils/subgraph'
+import { getOpcsApprovedTokens } from '@utils/subgraph'
 import { LoggerInstance } from '@oceanprotocol/lib'
 import { useNetwork, useConnect } from 'wagmi'
 
@@ -37,26 +30,12 @@ function MarketMetadataProvider({
   useEffect(() => {
     async function getOpcData() {
       const opcData = []
-      for (let i = 0; i < appConfig.chainIdsSupported.length; i++) {
-        const response: OperationResult<OpcQuery> = await fetchData(
-          opcQuery,
-          null,
-          getQueryContext(appConfig.chainIdsSupported[i])
-        )
-        opcData.push({
-          chainId: appConfig.chainIdsSupported[i],
-          approvedTokens: response.data?.opc?.approvedTokens?.map(
-            (token) => token.address
-          ),
-          swapApprovedFee: response.data?.opc?.swapOceanFee,
-          swapNotApprovedFee: response.data?.opc?.swapNonOceanFee
-        } as OpcFee)
-      }
-      LoggerInstance.log('[MarketMetadata] Got new data.', {
-        opcFees: opcData,
-        siteContent,
-        appConfig
-      })
+      for (let i = 0; i < appConfig.chainIdsSupported.length; i++)
+        LoggerInstance.log('[MarketMetadata] Got new data.', {
+          opcFees: opcData,
+          siteContent,
+          appConfig
+        })
       setOpcFees(opcData)
     }
     getOpcData()

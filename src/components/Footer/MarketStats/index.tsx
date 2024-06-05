@@ -6,7 +6,6 @@ import useNetworkMetadata, {
 } from '@hooks/useNetworkMetadata'
 import { LoggerInstance } from '@oceanprotocol/lib'
 import styles from './index.module.css'
-import { FooterStatsValues_globalStatistics as FooterStatsValuesGlobalStatistics } from '../../../../src/@types/subgraph/FooterStatsValues'
 import MarketStatsTotal from './Total'
 import { queryGlobalStatistics } from './_queries'
 import { StatsTotal } from './_types'
@@ -25,6 +24,12 @@ const initialTotal: StatsTotal = {
   veLocked: 0
 }
 
+interface FooterStatsValuesGlobalStatistics {
+  nftCount: number
+  datatokenCount: number
+  orderCount: number
+}
+
 export default function MarketStats(): ReactElement {
   const { appConfig } = useMarketMetadata()
   const { networksList } = useNetworkMetadata()
@@ -32,7 +37,6 @@ export default function MarketStats(): ReactElement {
   const [data, setData] = useState<{
     [chainId: number]: FooterStatsValuesGlobalStatistics
   }>()
-  const [total, setTotal] = useState(initialTotal)
 
   //
   // Set the main chain ids we want to display stats for
@@ -74,9 +78,6 @@ export default function MarketStats(): ReactElement {
     }
 
     const veTotals = await getTotalAllocatedAndLocked()
-    total.veAllocated = veTotals.totalAllocated
-    total.veLocked = veTotals.totalLocked
-    setTotal(total)
 
     setData(newData)
   }, [mainChainIds])
@@ -93,7 +94,7 @@ export default function MarketStats(): ReactElement {
   //
   useEffect(() => {
     if (!data || !mainChainIds?.length) return
-    const newTotal: StatsTotal = total
+    const newTotal: StatsTotal = { ...initialTotal }
 
     for (const chainId of mainChainIds) {
       try {
@@ -109,35 +110,19 @@ export default function MarketStats(): ReactElement {
       }
     }
 
-    setTotal(newTotal)
+    setData(data)
   }, [data, mainChainIds])
 
   return (
     <div className={styles.stats}>
       <div>
-        <MarketStatsTotal total={total} />{' '}
+        <MarketStatsTotal total={initialTotal} />
         <Tooltip
           className={styles.info}
           content={
             <Markdown className={styles.note} text={content.stats.note} />
           }
         />
-      </div>
-      <div>
-        <PriceUnit
-          decimals="0"
-          price={total.veLocked}
-          symbol="OCEAN"
-          size="small"
-        />{' '}
-        locked.{' '}
-        <PriceUnit
-          decimals="0"
-          price={total.veAllocated}
-          symbol="veOCEAN"
-          size="small"
-        />{' '}
-        allocated.
       </div>
     </div>
   )

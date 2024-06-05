@@ -109,7 +109,7 @@ export default function MenuPage() {
           </div>
         </section>
 
-        <style jsx>{`
+        <style>{`
           .menu {
             padding: 40px;
             display: flex;

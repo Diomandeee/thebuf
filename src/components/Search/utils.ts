@@ -17,7 +17,7 @@ export function updateQueryStringParameter(
   key: string,
   newValue: string
 ): string {
-  const regex = new RegExp('([?&])' + key + '=.*?(&|$)', 'i')
+  const regex = ''
   const separator = uri.indexOf('?') !== -1 ? '&' : '?'
 
   if (uri.match(regex)) {

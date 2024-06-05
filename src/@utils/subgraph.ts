@@ -2,8 +2,8 @@ import { gql, OperationResult, TypedDocumentNode, OperationContext } from 'urql'
 import { LoggerInstance } from '@oceanprotocol/lib'
 import { getUrqlClientInstance } from '@context/UrqlProvider'
 import { getOceanConfig } from './ocean'
-import { OrdersData_orders as OrdersData } from '../@types/subgraph/OrdersData'
-import { OpcFeesQuery as OpcFeesData } from '../@types/subgraph/OpcFeesQuery'
+// import { OrdersData_orders as OrdersData } from '../@types/subgraph/OrdersData'
+// import { OpcFeesQuery as OpcFeesData } from '../@types/subgraph/OpcFeesQuery'
 import appConfig from '../../app.config'
 
 const UserTokenOrders = gql`
@@ -120,12 +120,9 @@ export async function getOpcFees(chainId: number) {
     id: 1
   }
   const context = getQueryContext(chainId)
+
   try {
-    const response: OperationResult<OpcFeesData> = await fetchData(
-      OpcFeesQuery,
-      variables,
-      context
-    )
+    const response = await fetchData(OpcFeesQuery, variables, context)
     opcFees = response?.data?.opc
   } catch (error) {
     LoggerInstance.error('Error getOpcFees: ', error.message)
@@ -137,21 +134,17 @@ export async function getOpcFees(chainId: number) {
 export async function getUserTokenOrders(
   accountId: string,
   chainIds: number[]
-): Promise<OrdersData[]> {
-  const data: OrdersData[] = []
-  const variables = { user: accountId?.toLowerCase() }
+): Promise<any> {
+  const variables = {
+    user: accountId
+  }
 
   try {
-    const tokenOrders = await fetchDataForMultipleChains(
+    const data = await fetchDataForMultipleChains(
       UserTokenOrders,
       variables,
       chainIds
     )
-    for (let i = 0; i < tokenOrders?.length; i++) {
-      tokenOrders[i].orders.forEach((tokenOrder: OrdersData) => {
-        data.push(tokenOrder)
-      })
-    }
 
     return data
   } catch (error) {

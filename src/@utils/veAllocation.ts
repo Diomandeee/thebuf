@@ -1,7 +1,3 @@
-import { AllLockedQuery } from '../../src/@types/subgraph/AllLockedQuery'
-import { OwnAllocationsQuery } from '../../src/@types/subgraph/OwnAllocationsQuery'
-import { NftOwnAllocationQuery } from '../../src/@types/subgraph/NftOwnAllocationQuery'
-import { OceanLockedQuery } from '../../src/@types/subgraph/OceanLockedQuery'
 import { gql, OperationResult } from 'urql'
 import { fetchData, getQueryContext } from './subgraph'
 import axios from 'axios'
@@ -85,16 +81,11 @@ export async function getNftOwnAllocation(
 ): Promise<number> {
   const veNetworkId = getVeChainNetworkId(networkId)
   const queryContext = getQueryContext(veNetworkId)
-  const fetchedAllocation: OperationResult<NftOwnAllocationQuery, any> =
-    await fetchData(
-      NftOwnAllocation,
-      {
-        address: userAddress.toLowerCase(),
-        nftAddress: nftAddress.toLowerCase()
-      },
-      queryContext
-    )
-
+  const fetchedAllocation = await fetchData(
+    NftOwnAllocation,
+    { address: userAddress, nftAddress },
+    queryContext
+  )
   return fetchedAllocation.data?.veAllocations[0]?.allocated
 }
 
@@ -105,24 +96,16 @@ export async function getTotalAllocatedAndLocked(): Promise<TotalVe> {
   }
 
   const queryContext = getQueryContext(1)
+  const fetchedLocked = await fetchData(AllLocked, {}, queryContext)
+  fetchedLocked.data?.veOCEANs.forEach((x) => {
+    totals.totalLocked += x.lockedAmount
+  })
+  const fetchedAllocations = await fetchData(OwnAllocations, {}, queryContext)
 
-  const response = await axios.post(`https://df-sql.oceandao.org/nftinfo`)
-  totals.totalAllocated = response.data?.reduce(
-    (previousValue: number, currentValue: { ve_allocated: string }) =>
-      previousValue + Number(currentValue.ve_allocated),
-    0
-  )
+  fetchedAllocations.data?.veAllocations.forEach((x) => {
+    totals.totalAllocated += x.allocated
+  })
 
-  const fetchedLocked: OperationResult<AllLockedQuery, any> = await fetchData(
-    AllLocked,
-    null,
-    queryContext
-  )
-  totals.totalLocked = fetchedLocked.data?.veOCEANs.reduce(
-    (previousValue, currentValue) =>
-      previousValue + Number(currentValue.lockedAmount),
-    0
-  )
   return totals
 }
 
@@ -130,48 +113,39 @@ export async function getLocked(
   userAddress: string,
   networkIds: number[]
 ): Promise<number> {
-  let total = 0
   const veNetworkIds = getVeChainNetworkIds(networkIds)
+  let lockedAmount = 0
   for (let i = 0; i < veNetworkIds.length; i++) {
     const queryContext = getQueryContext(veNetworkIds[i])
-    const fetchedLocked: OperationResult<OceanLockedQuery, any> =
-      await fetchData(
-        OceanLocked,
-        { address: userAddress.toLowerCase() },
-        queryContext
-      )
-
-    fetchedLocked.data?.veOCEAN?.lockedAmount &&
-      (total += Number(fetchedLocked.data?.veOCEAN?.lockedAmount))
+    const fetchedLocked = await fetchData(
+      OceanLocked,
+      { address: userAddress },
+      queryContext
+    )
+    lockedAmount += fetchedLocked.data?.veOCEAN?.lockedAmount || 0
   }
-
-  return total
+  return lockedAmount
 }
 
 export async function getOwnAllocations(
   networkIds: number[],
   userAddress: string
 ): Promise<Allocation[]> {
-  const allocations: Allocation[] = []
   const veNetworkIds = getVeChainNetworkIds(networkIds)
+  const allocations: Allocation[] = []
   for (let i = 0; i < veNetworkIds.length; i++) {
     const queryContext = getQueryContext(veNetworkIds[i])
-    const fetchedAllocations: OperationResult<OwnAllocationsQuery, any> =
-      await fetchData(
-        OwnAllocations,
-        { address: userAddress.toLowerCase() },
-        queryContext
-      )
-
-    fetchedAllocations.data?.veAllocations.forEach(
-      (x) =>
-        x.allocated !== '0' &&
-        allocations.push({
-          nftAddress: x.nftAddress,
-          allocation: x.allocated / 100
-        })
+    const fetchedAllocations = await fetchData(
+      OwnAllocations,
+      { address: userAddress },
+      queryContext
     )
+    fetchedAllocations.data?.veAllocations.forEach((x) => {
+      allocations.push({
+        nftAddress: x.nftAddress,
+        allocation: x.allocated
+      })
+    })
   }
-
   return allocations
 }

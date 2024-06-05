@@ -40,7 +40,7 @@ export default function AboutUsPage() {
           <div className="event">
             <div className="event-year">2016</div>
             <div className="event-content">
-              <h3>Mohamed's Culinary Journey Begins</h3>
+              <h3>Mohamed Culinary Journey Begins</h3>
               <p>
                 Mohamed starts his culinary career, working in various food and
                 beverage establishments, honing his skills and developing a
@@ -54,7 +54,7 @@ export default function AboutUsPage() {
               <h3>Recruitment Expertise</h3>
               <p>
                 Mohamed gains experience in recruitment, specializing in finding
-                the best baristas in the United States, ensuring Buf Barista's
+                the best baristas in the United States, ensuring Buf Barista
                 team is composed of top talent.
               </p>
             </div>
@@ -76,7 +76,7 @@ export default function AboutUsPage() {
           {/* Add more events here */}
         </section>
 
-        <style jsx>{`
+        <style>{`
           .timeline {
             display: flex;
             flex-direction: column;

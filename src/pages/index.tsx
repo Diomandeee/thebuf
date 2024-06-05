@@ -25,7 +25,6 @@ export default function IndexPage() {
         uri={router.route}
         headerCenter
       >
-        {/* Hero Section */}
         <section className="hero">
           <div className="hero-content">
             <h1 className="headline">Coffee that Celebrates Your Event</h1>
@@ -51,7 +50,6 @@ export default function IndexPage() {
           </div>
         </section>
 
-        {/* Benefits Section */}
         <section className="benefits">
           <h2>Why Choose Buf Barista?</h2>
           <div className="benefit-list">
@@ -114,7 +112,6 @@ export default function IndexPage() {
           </div>
         </section>
 
-        {/* How It Works Section */}
         <section className="how-it-works">
           <h2>How It Works</h2>
           <div className="how-it-works-steps">
@@ -149,7 +146,6 @@ export default function IndexPage() {
           </div>
         </section>
 
-        {/* Contact Section */}
         <section className="contact">
           <h2>Contact Us</h2>
           <p>
@@ -161,7 +157,7 @@ export default function IndexPage() {
           </Button>
         </section>
 
-        <style jsx>{`
+        <style>{`
           /* Define CSS-in-JS styles */
           .hero {
             display: flex;

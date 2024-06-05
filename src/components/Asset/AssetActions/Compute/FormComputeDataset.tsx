@@ -9,7 +9,6 @@ import PriceOutput from './PriceOutput'
 import { useAsset } from '@context/Asset'
 import content from '../../../../../content/pages/startComputeDataset.json'
 import { Asset, ZERO_ADDRESS } from '@oceanprotocol/lib'
-import { getAccessDetails } from '@utils/accessDetailsAndPricing'
 import { getTokenBalanceFromSymbol } from '@utils/wallet'
 import { MAX_DECIMALS } from '@utils/constants'
 import Decimal from 'decimal.js'
@@ -109,6 +108,16 @@ export default function FormStartCompute({
     return assetDdo
   }
 
+  function getAccessDetails(
+    chainId: number,
+    datatokenAddress: string,
+    accountId: string
+  ) {
+    return null
+  }
+
+  //
+
   useEffect(() => {
     if (!values.algorithm || !isConsumable) return
 
@@ -117,8 +126,7 @@ export default function FormStartCompute({
       const accessDetails = await getAccessDetails(
         algorithmAsset.chainId,
         algorithmAsset.services[0].datatokenAddress,
-        algorithmAsset.services[0].timeout,
-        accountId || ZERO_ADDRESS // if user is not connected, use ZERO_ADDRESS as accountId
+        accountId
       )
       const extendedAlgoAsset: AssetExtended = {
         ...algorithmAsset,

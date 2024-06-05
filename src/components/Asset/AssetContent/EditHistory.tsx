@@ -3,7 +3,6 @@ import { useAsset } from '@context/Asset'
 import ExplorerLink from '@shared/ExplorerLink'
 import Time from '@shared/atoms/Time'
 import { gql, OperationContext, useQuery } from 'urql'
-import { NftUpdate_nftUpdates as NftUpdate } from '../../../@types/subgraph/NftUpdate'
 import { getQueryContext } from '@utils/subgraph'
 import styles from './EditHistory.module.css'
 
@@ -29,8 +28,8 @@ export default function EditHistory({
   receipts,
   setReceipts
 }: {
-  receipts: NftUpdate[]
-  setReceipts: (receipts: NftUpdate[]) => void
+  receipts: any[]
+  setReceipts: (receipts: any[]) => void
 }): ReactElement {
   const { asset } = useAsset()
 

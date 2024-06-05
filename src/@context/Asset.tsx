@@ -12,7 +12,6 @@ import { CancelToken } from 'axios'
 import { getAsset } from '@utils/aquarius'
 import { useCancelToken } from '@hooks/useCancelToken'
 import { getOceanConfig, sanitizeDevelopmentConfig } from '@utils/ocean'
-import { getAccessDetails } from '@utils/accessDetailsAndPricing'
 import { useIsMounted } from '@hooks/useIsMounted'
 import { useMarketMetadata } from './MarketMetadata'
 import { assetStateToString } from '@utils/assetState'
@@ -121,6 +120,20 @@ function AssetProvider({
   // -----------------------------------
   // Helper: Get and set asset access details
   // -----------------------------------
+
+  const getAccessDetails = useCallback(
+    async (
+      chainId: number,
+      datatokenAddress: string,
+      timeout: number,
+      accountId: string
+    ) => {
+      const accessDetails = {} as AccessDetails
+
+      return accessDetails
+    },
+    []
+  )
   const fetchAccessDetails = useCallback(async (): Promise<void> => {
     if (!asset?.chainId || !asset?.services?.length) return
 
