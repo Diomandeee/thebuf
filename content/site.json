@@ -1,10 +1,27 @@
 {
-  "siteTitle": "Meaning Full Power",
-  "siteTagline": "A Guide to Harnessing Your True Potential",
+  "siteTitle": "Buf Barista",
+  "siteTagline": "Sip, Sweet and Shimmy",
   "siteUrl": "https://synergetic-studio.vercel.app/",
   "siteImage": "/share.png",
   "copyright": "All Rights Reserved. Powered by ",
-  "menu": [],
+  "menu": [
+    {
+      "name": "Home",
+      "link": "/"
+    },
+    {
+      "name": "Menu",
+      "link": "/menu"
+    },
+    {
+      "name": "About Us",
+      "link": "/about"
+    },
+    {
+      "name": "Contact",
+      "link": "/contact"
+    }
+  ],
 
   "announcement": " ",
   "warning": {

@@ -2,7 +2,8 @@ import React, { ReactNode, ReactElement } from 'react'
 import PageHeader from './PageHeader'
 import Seo from './Seo'
 import Container from '@shared/atoms/Container'
-
+import Image from 'next/image'
+import Buf from '@images/buf.png'
 export interface PageProps {
   children: ReactNode
   title?: string
@@ -10,6 +11,7 @@ export interface PageProps {
   description?: string
   noPageHeader?: boolean
   headerCenter?: boolean
+  image?: string
 }
 
 export default function Page({
@@ -26,11 +28,18 @@ export default function Page({
       <Container>
         {title && !noPageHeader && (
           <PageHeader
-            title={<>{title.slice(0, 400)}</>}
+            title={<>{title.slice(0, 600)}</>}
             description={description}
             center={headerCenter}
           />
         )}
+        <Image
+          src={Buf}
+          alt="Buf Barista Logo"
+          width={200}
+          height={200}
+          className="logo"
+        />
         {children}
       </Container>
     </>

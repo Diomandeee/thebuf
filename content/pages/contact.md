@@ -1,10 +1,16 @@
 ---
 title: Get in Touch
-description: If you have any questions, feedback, or just want to say hello.
+description: If you have any questions, feedback, or just want to say hello, feel free to reach out to me through the following channels.
 ---
 
-**Email:** [✉️ gdiomande7907@gmail.com](mailto:gdiomande7907@gmail.com)
+## Business Contacts
 
-**Instagram:** [📸 @diomandee](https://www.instagram.com/diomandee/)
+**Email:** [✉️ bufbarista@example.com](mailto:bufbarista@example.com)
 
-**LinkedIn:** [👨🏾‍💻 @diomandee](https:/www.linkedin.com/in/diomandee)
+**Bufbarista Instagram:** [📸 @bufbarista](https://www.instagram.com/bufbarista/)
+
+## Personal Contacts
+
+**Personal Instagram:** [📸 @diomandee](https://www.instagram.com/diomandee/)
+
+## I'm looking forward to hearing from you!

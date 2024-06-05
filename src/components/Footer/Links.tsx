@@ -15,21 +15,21 @@ export default function Links() {
 
   return (
     <div className={styles.links}>
-      {content.links.map(({ name, url }) => (
+      {/* {content.links.map(({ name, url }) => (
         <Fragment key={name}>
           <Button style="text" size="small" href={url} target="_blank">
             {name} <External />
           </Button>
           {' — '}
         </Fragment>
-      ))}
+      ))} */}
 
-      <Link href="/imprint">Imprint</Link>
+      {/* <Link href="/imprint">Imprint</Link>
       {' — '}
       <Link href="/terms">Terms</Link>
-      {' — '}
-      <Link href={privacyPolicySlug}>Privacy</Link>
-      {appConfig?.privacyPreferenceCenter === 'true' && (
+      {' — '} */}
+      {/* <Link href={privacyPolicySlug}>Privacy</Link> */}
+      {/* {appConfig?.privacyPreferenceCenter === 'true' && (
         <>
           {' — '}
           <Button
@@ -43,7 +43,7 @@ export default function Links() {
             {cookies.optionalCookies ? 'Cookie Settings' : 'Cookies'}
           </Button>
         </>
-      )}
+      )} */}
     </div>
   )
 }
