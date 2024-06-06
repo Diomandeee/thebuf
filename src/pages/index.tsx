@@ -205,6 +205,23 @@ export default function IndexPage() {
             max-width: 100%;
             height: auto;
             border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 1s ease-in-out;
+
+          }
+
+
+          .mobile-image {
+            display: none;
+              
+          }
+          .mobile-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 1s ease-in-out;
+
           }
 
           .headline {
