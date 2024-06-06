@@ -28,9 +28,20 @@ export default function MenuPage() {
             <h3 className="menu-section-title">Dairy Options</h3>
             <ul className="menu-list">
               <li>Whole Milk</li>
-              <li>Fat Free Milk</li>
-              <li>Soy Milk</li>
+              <li>Cocunut Milk</li>
+              <li>Oat Milk</li>
               <li>Almond Milk</li>
+            </ul>
+          </div>
+
+          {/* Tea Options */}
+          <div className="menu-section">
+            <h3 className="menu-section-title">Tea Options</h3>
+            <ul className="menu-list">
+              <li>Black Tea</li>
+              <li>Green Tea</li>
+              <li>Chai Tea</li>
+              <li>Herbal Tea</li>
             </ul>
           </div>
 
@@ -95,11 +106,8 @@ export default function MenuPage() {
           <div className="menu-section expanded-menu">
             <h3 className="menu-section-title">Expanded Menu</h3>
             <p>
-              Our menu is not limited to the items listed above. We offer a wide
-              variety of espresso-based drinks, teas, and other beverages to
-              suit your tastes. If you have a special request or dietary
-              restriction, please let us know and we will do our best to
-              accommodate you.
+              If you have a special request or dietary restriction, please let
+              us know and we will do our best to accommodate you.
             </p>
             <Button style="primary" to="mailto:info@bufbarista.com">
               Contact Us for More Info

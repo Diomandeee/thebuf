@@ -8,7 +8,6 @@ import CoffeeAndDance from '@images/coffee-and-dance.png'
 import Step1 from '@images/1.png'
 import Step2 from '@images/step_2.jpeg'
 import Step3 from '@images/3.png'
-import Step4 from '@images/step_4.jpeg'
 
 export default function IndexPage() {
   const router = useRouter()
@@ -44,19 +43,10 @@ export default function IndexPage() {
             <Image
               src={CoffeeAndDance}
               alt="Coffee and Dance"
-              width={500}
-              height={500}
+              width={700}
+              height={700}
             />
           </div>
-        </section>
-
-        <section className="mobile-image">
-          <Image
-            src={CoffeeAndDance}
-            alt="Coffee and Dance"
-            width={500}
-            height={500}
-          />
         </section>
 
         <section className="benefits">
@@ -137,13 +127,27 @@ export default function IndexPage() {
                 drinks at your event.
               </p>
             </div>
-            <div className="step">
-              <Image src={Step4} alt="Engage & Enjoy" width={80} height={80} />
-              <h3>4. Engage & Enjoy</h3>
+          </div>
+        </section>
+
+        {/* Testimonials Section */}
+        <section className="testimonials">
+          <h2>What Our Clients Say</h2>
+          <div className="testimonial-list">
+            <div className="testimonial-item">
               <p>
-                Engage with attendees as they enjoy complimentary coffee,
-                boosting foot traffic and visibility.
+                Buf Barista made our trade show booth the talk of the event! The
+                coffee was excellent, and the branded cups were a hit.
               </p>
+              <p>- Jane Doe, Event Organizer</p>
+            </div>
+            <div className="testimonial-item">
+              <p>
+                Our booth saw a significant increase in traffic thanks to Buf
+                Barista. The coffee was delicious, and the service was
+                outstanding.
+              </p>
+              <p>- John Smith, Marketing Director</p>
             </div>
           </div>
         </section>
@@ -160,7 +164,6 @@ export default function IndexPage() {
         </section>
 
         <style>{`
-          /* Your custom styles here */
           :root {
             --color-primary: #f5a623;
             --color-secondary: #b0bec5;
@@ -169,17 +172,25 @@ export default function IndexPage() {
             --background-body: #fcfcfc;
             --background-body-transparent: rgba(255, 255, 255, 0.8);
           }
+
+          body {
+            background-color:  #b0bec5;
+            font-family: 'Arial', sans-serif;
+          }
+
           .hero,
           .benefits,
           .our-services,
           .how-it-works,
-          .contact {
+          .contact,
+          .testimonials {
             padding: 40px;
             background-color: white;
             border-radius: 15px;
             margin-bottom: 40px;
             text-align: center;
-
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
           }
 
           .hero {
@@ -187,6 +198,7 @@ export default function IndexPage() {
             align-items: center;
             justify-content: space-between;
             animation: fadeIn 1s ease-in-out;
+            
           }
 
           .hero-content {
@@ -199,6 +211,7 @@ export default function IndexPage() {
             display: flex;
             justify-content: center;
             animation: float 2s ease-in-out infinite;
+            margin-left: 40px;
           }
 
           .hero-image img {
@@ -207,13 +220,10 @@ export default function IndexPage() {
             border-radius: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             animation: fadeInUp 1s ease-in-out;
-
           }
-
 
           .mobile-image {
             display: none;
-              
           }
           .mobile-image img {
             max-width: 100%;
@@ -221,20 +231,17 @@ export default function IndexPage() {
             border-radius: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             animation: fadeInUp 1s ease-in-out;
-
           }
 
           .headline {
             font-size: 3rem;
             margin-bottom: 1rem;
             font-weight: bold;
-            color: var(--color-primary);
+            color: var(--font-color-heading);
             animation: slideInLeft 1s ease-in-out;
-            
           }
 
           .subheadline {
-
             font-size: 1.8rem;
             margin-bottom: 1.5rem;
             color: var(--color-secondary);
@@ -248,68 +255,22 @@ export default function IndexPage() {
             animation: fadeInUp 1s ease-in-out;
           }
 
-          .benefit-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            grid-gap: 20px;
-            margin-top: 40px;
-            animation: fadeIn 1s ease-in-out;
+          .benefit-list,
+          .service-list,
+          .how-it-works-steps,
+          .testimonial-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            text-align: left;
+            
           }
-
-
-          .service-list {
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'space-around'
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            grid-gap: 20px;
-            margin-top: 40px;
-            animation: fadeIn 1s ease-in-out;
-          }
-          .how-it-works-steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            grid-gap: 20px;
-            margin-top: 40px;
-          }
-
-          .benefit-item,
-          .service-card {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            text-align: center;
-            animation: fadeInUp 1s ease-in-out;
-            margin-bottom: 20px;
-
-          }
-          .step {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            text-align: center;
-            animation: fadeInUp 1s ease-in-out;
-          }
-
-          .benefit-item:hover,
-          .service-card:hover,
-          .step:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-          }
-
-          .benefit-item h3,
           .service-card h3,
           .step h3 {
             font-size: 1.5rem;
             margin-bottom: 1rem;
-            color: #663300;
+            color: var(--color-secondary);
             animation: zoomIn 1s ease-in-out;
           }
 
@@ -321,81 +282,80 @@ export default function IndexPage() {
             color: var(--font-color-text);
           }
 
-          .how-it-works-steps {
-            
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: repeat(2, auto);
-            grid-gap: 20px;
-            margin-top: 40px;
-            animation: fadeIn 1s ease-in-out;
+
+          .benefit-item,
+          .service-card,
+          .step,
+          .testimonial-item {
+            flex: 1;
+            min-width: 250px;
+            background: var(--background-body-transparent);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background-color: white;
+            animation: fadeInUp 1s ease-in-out;
+
           }
 
-          .step h3 {
-            font-size: 1.5rem;
+          .benefit-item:hover,
+          .service-card:hover,
+          .step:hover,
+          .testimonial-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+          }
+
+          h3 {
+            color: var(--color-secondary);
             margin-bottom: 1rem;
-            color: #663300;
           }
 
-          .contact {
-            text-align: center;
-            animation: fadeIn 1s ease-in-out;
+          p {
+            color: var(--font-color-text);
+            line-height: 1.6;
           }
-          .contact button {
-            margin: 1rem;
+
+          .testimonial-item {
+            font-style: italic;
           }
-    
-          .mobile-image {
-            display: none;
+
+          .step img,
+          .service-card img {
+            display: block;
+            margin: 0 auto 1rem;
           }
-    
+
+          .step h3,
+          .service-card h3 {
+            margin-bottom: 0.5rem;
+          }
+
+          .contact p {
+            margin-bottom: 1.5rem;
+          }
+
           @media (max-width: 768px) {
             .hero {
               flex-direction: column;
               text-align: center;
             }
-    
+
             .hero-content {
-              max-width: 100%;
-              margin-bottom: 20px;
+              margin-bottom: 2rem;
             }
-    
+
             .hero-image {
-              display: none;
+              margin-left: 0;
             }
-    
+
             .mobile-image {
               display: block;
-              margin-bottom: 20px;
-              text-align: center;
-              animation: fadeInUp 1s ease-in-out;
-            }
-    
-            .how-it-works-steps {
-              grid-template-columns: 1fr;
-              grid-template-rows: repeat(4, auto);
+              margin-top: 1rem;
             }
           }
-    
-          /* Animations */
-          @keyframes slideInLeft {
-            from {
-              transform: translateX(-100%);
-            }
-            to {
-              transform: translateX(0);
-            }
-          }
-    
-          @keyframes slideInRight {
-            from {
-              transform: translateX(100%);
-            }
-            to {
-              transform: translateX(0);
-            }
-          }
-    
+
           @keyframes fadeIn {
             from {
               opacity: 0;
@@ -404,7 +364,7 @@ export default function IndexPage() {
               opacity: 1;
             }
           }
-    
+
           @keyframes fadeInUp {
             from {
               opacity: 0;
@@ -415,23 +375,38 @@ export default function IndexPage() {
               transform: translateY(0);
             }
           }
-    
-          @keyframes zoomIn {
-            from {
-              transform: scale(0);
-            }
-            to {
-              transform: scale(1);
-            }
-          }
-    
+
           @keyframes float {
-            0%,
-            100% {
+            0% {
               transform: translateY(0);
             }
             50% {
               transform: translateY(-10px);
+            }
+            100% {
+              transform: translateY(0);
+            }
+          }
+
+          @keyframes slideInLeft {
+            from {
+              transform: translateX(-100%);
+              opacity: 0;
+            }
+            to {
+              transform: translateX(0);
+              opacity: 1;
+            }
+          }
+
+          @keyframes slideInRight {
+            from {
+              transform: translateX(100%);
+              opacity: 0;
+            }
+            to {
+              transform: translateX(0);
+              opacity: 1;
             }
           }
         `}</style>
