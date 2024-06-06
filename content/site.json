@@ -14,7 +14,11 @@
       "link": "/menu"
     },
     {
-      "name": "About Us",
+      "name": "Brading",
+      "link": "/branding"
+    },
+    {
+      "name": "About",
       "link": "/about"
     },
     {

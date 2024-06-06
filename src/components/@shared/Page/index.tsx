@@ -33,13 +33,15 @@ export default function Page({
             center={headerCenter}
           />
         )}
-        <Image
-          src={Buf}
-          alt="Buf Barista Logo"
-          width={200}
-          height={200}
-          className="logo"
-        />
+        <div style={{ marginBottom: '2rem' }}>
+          <Image
+            src={Buf}
+            alt="Buf Barista Logo"
+            width={200}
+            height={200}
+            className="logo"
+          />
+        </div>
         {children}
       </Container>
     </>

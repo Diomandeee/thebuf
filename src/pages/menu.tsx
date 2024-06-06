@@ -2,7 +2,6 @@ import React from 'react'
 import Head from 'next/head'
 import Page from '@shared/Page'
 import Button from '@shared/atoms/Button'
-
 import { useRouter } from 'next/router'
 
 export default function MenuPage() {
@@ -21,7 +20,6 @@ export default function MenuPage() {
         headerCenter
       >
         {/* Menu Section */}
-
         <section className="menu">
           <h2 className="section-title">Espresso-based Drinks</h2>
 
@@ -110,11 +108,22 @@ export default function MenuPage() {
         </section>
 
         <style>{`
+          @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+
+          @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+          }
+
           .menu {
             padding: 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            animation: fadeIn 1s ease-in-out;
           }
 
           .section-title {
@@ -122,6 +131,19 @@ export default function MenuPage() {
             font-size: 2.5rem;
             margin-bottom: 2rem;
             color: #663300;
+            position: relative;
+            overflow: hidden;
+          }
+
+          .section-title::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 5px;
+            bottom: 0;
+            left: 0;
+            background: #ffcc99;
+            animation: slideIn 0.5s ease-out;
           }
 
           .menu-section {
@@ -130,10 +152,15 @@ export default function MenuPage() {
             border-radius: 8px;
             padding: 20px;
             margin-bottom: 20px;
-            width: 80%;
+            width: auto;
             max-width: 800px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
           }
 
           .menu-section:hover {
@@ -145,11 +172,25 @@ export default function MenuPage() {
             font-size: 1.8rem;
             margin-bottom: 1rem;
             color: #663300;
+            position: relative;
+            overflow: hidden;
+          }
+
+          .menu-section-title::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 5px;
+            bottom: 0;
+            left: 0;
+            background: #ffcc99;
+            animation: slideIn 0.5s ease-out;
           }
 
           .menu-list {
             list-style-type: none;
             padding-left: 0;
+            animation: fadeIn 1s ease-in-out;
           }
 
           .menu-list li {
@@ -166,6 +207,7 @@ export default function MenuPage() {
 
           .expanded-menu {
             text-align: center;
+            animation: fadeIn 1s ease-in-out;
           }
 
           .expanded-menu p {

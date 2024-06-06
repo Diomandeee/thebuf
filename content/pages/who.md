@@ -24,17 +24,3 @@ At Buf Barista, we understand that every event is unique. That's why we offer cu
 ### Professionalism
 
 We take pride in our team of seasoned and friendly baristas, who are committed to delivering exceptional customer service and creating a welcoming atmosphere. From setting up and managing the coffee bar to engaging with guests and providing expert recommendations, our team handles every aspect of the coffee service, enabling you to relax and enjoy your special event.
-
-## Our Services
-
-Buf Barista offers a range of services for events and special occasions, including weddings, corporate events, private parties, and more. We cater to large and small gatherings, customizing solutions to fit your specific needs and preferences. Our services include:
-
-- Mobile Espresso Bars
-- Specialty Coffee Stations
-- Coffee Carts and Kiosks
-- Customized Beverage Menus
-- Barista Staffing and Training
-
-## Contact Us
-
-Ready to elevate your event with Buf Barista? [Get in touch](mailto:info@bufbarista.com) with us today to discuss your coffee needs, pricing, and availability!
