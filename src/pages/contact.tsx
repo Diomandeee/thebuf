@@ -1,7 +1,7 @@
 import React from 'react'
 import Head from 'next/head'
 import Page from '@shared/Page'
-
+import Button from '@shared/atoms/Button'
 import { useRouter } from 'next/router'
 
 export default function ContactPage() {
@@ -15,34 +15,41 @@ export default function ContactPage() {
 
       <Page
         title="Get in Touch"
-        description="If you have any questions, feedback, or just want to say hello, feel free to reach out to me through the following channels."
+        description="Any questions, feedback, or just want to say hello, feel free to reach out to us!"
         uri={router.route}
         headerCenter
       >
         <section className="menu">
-          <div className="section-title">Business Contacts</div>
+          <div className="section-title">
+            <strong>Business Contacts</strong>
+          </div>
           <ul className="menu-list">
             <li>
               <strong>Email:</strong>{' '}
               <a href="mailto:mo@bufbarista.com">✉️ mo@bufbarista.com</a>
             </li>
             <li>
-              <strong>Bufbarista Instagram:</strong>{' '}
+              <strong>Instagram:</strong>{' '}
               <a href="https://www.instagram.com/bufbarista/">📸 @bufbarista</a>
             </li>
           </ul>
 
-          <div className="section-title">Personal Contacts</div>
+          <div className="section-title">
+            <strong>Personal Contacts</strong>
+          </div>
           <ul className="menu-list">
             <li>
-              <strong>Personal Instagram:</strong>{' '}
+              <strong>Instagram:</strong>{' '}
               <a href="https://www.instagram.com/diomandee/">📸 @diomandee</a>
             </li>
           </ul>
-
-          <p className="section-title">
-            I am looking forward to hearing from you!
-          </p>
+        </section>
+        {/* Call to Action Section */}
+        <section className="section cta">
+          <h2>🎉 Ready to Elevate Your Event?</h2>
+          <Button style="primary" to="https://www.typeform.com">
+            Get a Free Estimate
+          </Button>
         </section>
 
         <style>{`
@@ -64,16 +71,19 @@ export default function ContactPage() {
             align-items: center;
             animation: fadeIn 1s ease-in-out;
             background: white;
-            border: 15px solid #f5f5f5;
+            border: 10px solid #f5f5f5;
             border-radius: 16px;
+            max-width: 50%;
+            margin: 0 auto;
           }
 
           .section-title {
             text-align: center;
-            font-size: 2.5rem;
+            font-size: 1.5rem;
             margin-bottom: 2rem;
             color: #333;
             overflow: hidden;
+
           }
 
           .menu-list {
@@ -93,7 +103,15 @@ export default function ContactPage() {
             color: #333;
             text-decoration: none;
           }
+          .cta {
+            text-align: center;
+            margin-top: 40px;
+            animation: fadeIn 1s ease-in-out;
+          }
 
+          .cta h2 {
+            color: #663300;
+          }
           .menu-list li a:hover {
             color: #993300;
           }

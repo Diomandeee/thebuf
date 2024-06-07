@@ -1,7 +1,7 @@
 import React from 'react'
 import Head from 'next/head'
 import Page from '@shared/Page'
-
+import Button from '@shared/atoms/Button'
 import { useRouter } from 'next/router'
 
 export default function AboutUsPage() {
@@ -32,7 +32,7 @@ export default function AboutUsPage() {
           <div className="menu-section">
             <div className="menu-section-title">Customization 🎨</div>
             <p>
-              At Buf Barista, we understand that every event is unique. That`s
+              At Buf Barista, we understand that every event is unique. That is
               why we offer custom branding and personalization options, allowing
               you to add your logo or custom design to our cups, creating a
               lasting impression for your guests.
@@ -44,10 +44,16 @@ export default function AboutUsPage() {
             <p>
               We take pride in our team of seasoned and friendly baristas, who
               are committed to delivering exceptional customer service and
-              creating a welcoming atmosphere. From setting up and managing the
-              coffee bar to engaging with guests and providing expert
-              recommendations, our team handles every aspect of the coffee
-              service, enabling you to relax and enjoy your special event.
+              creating a welcoming atmosphere.
+            </p>
+          </div>
+          <div className="menu-section">
+            <div className="menu-section-title">Convenience 🚚</div>
+            <p>
+              From setting up and managing the coffee bar to engaging with
+              guests and providing expert recommendations, our team handles
+              every aspect of the coffee service, enabling you to relax and
+              enjoy your special event.
             </p>
           </div>
 
@@ -69,6 +75,14 @@ export default function AboutUsPage() {
           </div>
         </section>
 
+        {/* Call to Action Section */}
+        <section className="section cta">
+          <h2>🎉 Ready to Elevate Your Event?</h2>
+          <Button style="primary" to="https://www.typeform.com">
+            Get a Free Estimate
+          </Button>
+        </section>
+
         <style>{`
           @keyframes fadeIn {
             from {
@@ -88,7 +102,7 @@ export default function AboutUsPage() {
             align-items: center;
             animation: fadeIn 1s ease-in-out;
             background: white;
-            border: 15px solid #f5f5f5;
+            border: 10px solid #f5f5f5;
             border-radius: 16px;
           }
 
@@ -116,6 +130,8 @@ export default function AboutUsPage() {
             text-align: center;
             animation: fadeIn 1s ease-in-out;
             cursor: pointer;
+            margin-bottom: 2rem;
+
           }
 
           .menu-section:hover {
@@ -137,7 +153,15 @@ export default function AboutUsPage() {
           .collapsed {
             display: none;
           }
+          .cta {
+            text-align: center;
+            margin-top: 40px;
+            animation: fadeIn 1s ease-in-out;
+          }
 
+          .cta h2 {
+            color: #663300;
+          }
           .expanded {
             display: block;
           }

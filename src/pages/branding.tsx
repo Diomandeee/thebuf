@@ -111,7 +111,7 @@ export default function BrandingPage() {
         <section className="section cta">
           <h2>🎉 Ready to Elevate Your Event?</h2>
           <Button style="primary" to="https://www.typeform.com">
-            Get a Free Quote
+            Get a Free Estimate
           </Button>
         </section>
 
@@ -133,7 +133,7 @@ export default function BrandingPage() {
             align-items: center;
             animation: fadeIn 1s ease-in-out;
             background: white;
-            border: 15px solid #f5f5f5;
+            border: 10px solid #f5f5f5;
             border-radius: 16px;
           }
 

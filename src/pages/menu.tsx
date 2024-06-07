@@ -94,7 +94,7 @@ export default function MenuPage() {
             align-items: center;
             animation: fadeIn 1s ease-in-out;
             background: white;
-            border: 15px solid #f5f5f5;
+            border: 10px solid #f5f5f5;
             border-radius: 16px;
           }
 

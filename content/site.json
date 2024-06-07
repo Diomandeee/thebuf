@@ -6,10 +6,6 @@
   "copyright": "All Rights Reserved. Powered by ",
   "menu": [
     {
-      "name": "Home",
-      "link": "/"
-    },
-    {
       "name": "Menu",
       "link": "/menu"
     },
