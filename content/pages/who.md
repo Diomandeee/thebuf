@@ -5,7 +5,7 @@ description: Learn about Buf Barista and our commitment to exceptional coffee ex
 
 ## Our Story
 
-At Buf Barista, we have been perfecting the art of coffee and event services since our establishment in 20XX. Founded on the belief that special moments deserve exceptional coffee experiences, our dedicated team of skilled baristas has been serving top-quality, expertly crafted coffees to customers at events and special occasions across the region.
+At Buf Barista, we have been perfecting the art of coffee and event services since our establishment in 2024. Founded on the belief that special moments deserve exceptional coffee experiences, our dedicated team of skilled baristas has been serving top-quality, expertly crafted coffees to customers at events and special occasions across the region.
 
 ## Our Mission
 

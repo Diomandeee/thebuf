@@ -19,110 +19,127 @@ export default function AboutUsPage() {
         uri={router.route}
         headerCenter
       >
-        <section className="mission">
-          <p>
-            Our mission is to provide tailored and unforgettable coffee
-            experiences for every event we serve. By combining the highest
-            quality ingredients, state-of-the-art equipment, and exceptional
-            baristas, we strive to deliver a memorable and enjoyable experience
-            for you and your guests. We believe that our exceptional coffee
-            offerings not only bring people together but create lasting
-            memories.
-          </p>
-          <p>
-            We take pride in our commitment to quality, personalization, and
-            professionalism. From sourcing the finest coffee beans to offering
-            custom branding options and providing top-notch customer service, we
-            aim to exceed your expectations and make your event truly special.
-          </p>
-        </section>
-        <section className="timeline">
-          <div className="event">
-            <div className="event-year">2016</div>
-            <div className="event-content">
-              <h3>Mohamed Culinary Journey Begins</h3>
-              <p>
-                Mohamed starts his culinary career, working in various food and
-                beverage establishments, honing his skills and developing a
-                passion for creating exceptional dining experiences.
-              </p>
-            </div>
+        <section className="menu">
+          <div className="menu-section">
+            <div className="menu-section-title">Quality ☕️</div>
+            <p>
+              We source only the finest coffee beans from around the world,
+              carefully selecting and roasting them to achieve the perfect
+              balance of flavors and aromas.
+            </p>
           </div>
-          <div className="event">
-            <div className="event-year">2018</div>
-            <div className="event-content">
-              <h3>Recruitment Expertise</h3>
-              <p>
-                Mohamed gains experience in recruitment, specializing in finding
-                the best baristas in the United States, ensuring Buf Barista
-                team is composed of top talent.
-              </p>
-            </div>
+
+          <div className="menu-section">
+            <div className="menu-section-title">Customization 🎨</div>
+            <p>
+              At Buf Barista, we understand that every event is unique. That`s
+              why we offer custom branding and personalization options, allowing
+              you to add your logo or custom design to our cups, creating a
+              lasting impression for your guests.
+            </p>
           </div>
-          <div className="event">
-            <div className="event-year">2024</div>
-            <div className="event-content">
-              <h3>Establishment of Buf Barista</h3>
-              <p>
-                At Buf Barista, we have been perfecting the art of coffee and
-                event services since our establishment in 2024. Founded on the
-                belief that special moments deserve exceptional coffee
-                experiences, our dedicated team of skilled baristas has been
-                serving top-quality, expertly crafted coffees to customers at
-                events and special occasions across the region.
-              </p>
-            </div>
+
+          <div className="menu-section">
+            <div className="menu-section-title">Professionalism 🎩</div>
+            <p>
+              We take pride in our team of seasoned and friendly baristas, who
+              are committed to delivering exceptional customer service and
+              creating a welcoming atmosphere. From setting up and managing the
+              coffee bar to engaging with guests and providing expert
+              recommendations, our team handles every aspect of the coffee
+              service, enabling you to relax and enjoy your special event.
+            </p>
           </div>
-          {/* Add more events here */}
+
+          <div className="menu-section">
+            <div className="menu-section-title">Innovation 🚀</div>
+            <p>
+              Buf Barista is constantly innovating to bring you new and exciting
+              coffee experiences. We are always exploring new ways to delight
+              your taste buds and elevate your coffee experience.
+            </p>
+          </div>
+
+          <div className="menu-section">
+            <div className="menu-section-title">Community 🌍</div>
+            <p>
+              We believe in the power of coffee to bring people together and
+              create connections.
+            </p>
+          </div>
         </section>
 
         <style>{`
-          .timeline {
+          @keyframes fadeIn {
+            from {
+              opacity: 0;
+              transform: translateY(20px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+
+          .menu {
+            padding: 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
+            animation: fadeIn 1s ease-in-out;
+            background: white;
+            border: 15px solid #f5f5f5;
+            border-radius: 16px;
           }
 
-          .event {
-            display: flex;
-            width: 80%;
-            max-width: 800px;
-            margin-bottom: 20px;
-            border-left: 2px solid #663300;
-            padding-left: 20px;
-          }
-
-          .event-year {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #663300;
-            margin-right: 20px;
-            padding-right: 20px;
-            border-right: 2px solid #663300;
-          }
-
-          .event-content {
-            flex: 1;
-          }
-
-          .event-content h3 {
-            margin-top: 0;
-            color: #663300;
-          }
-
-          .event-content p {
-            margin-bottom: 0;
-            color: #333;
-          }
-
-          .mission {
-            padding: 20px;
+          .section-title {
             text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #333;
+            overflow: hidden;
           }
 
-          .mission h2 {
-            color: #663300;
+          .menu-section {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
+            cursor: pointer;
+          }
+
+          .menu-section:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+          }
+
+          .menu-section-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #b0bec5;
+          }
+
+          .menu-section p {
+            font-size: 1.3rem; /* Adjusted font size */
+            line-height: 1.6;
+          }
+
+          .collapsed {
+            display: none;
+          }
+
+          .expanded {
+            display: block;
           }
         `}</style>
       </Page>

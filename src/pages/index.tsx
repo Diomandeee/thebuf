@@ -8,9 +8,38 @@ import CoffeeAndDance from '@images/coffee-and-dance.png'
 import Step1 from '@images/1.png'
 import Step2 from '@images/step_2.jpeg'
 import Step3 from '@images/3.png'
+import Accordion from 'src/components/Accordion'
 
 export default function IndexPage() {
   const router = useRouter()
+
+  const faqData = [
+    {
+      question: 'How can I Personalize my Event with Buf Barista?',
+      answer:
+        'You can personalize your event by having your logo and event branding printed on the coffee cups.'
+    },
+    {
+      question: 'How soon should I book your services for my event?',
+      answer:
+        'We recommend booking our services at least 2 weeks in advance to ensure availability.'
+    },
+    {
+      question: 'What is your service area?',
+      answer:
+        'We serve events in the Metro New York area, Los Angeles, San Francisco, Miami, and Chicago.'
+    },
+    {
+      question: 'Do you provide everything needed for the coffee bar?',
+      answer:
+        'Yes, we provide everything needed for coffee bar: Baristas, Coffee Cart, Espresso machine, Grinder, Coffee, Syrups, coffee beans, milk, almond/oat milk, tea, sugar, sweeteners, cups, lids, water, tea, and ice.'
+    },
+    {
+      question: 'How do you print the logo on the latte?',
+      answer:
+        'We use Drink Printer, that allows us to print any logos, text in seconds, names, photos on Milk/Oat Foam. All prints are printed using Natural coffee beans extract.'
+    }
+  ]
 
   return (
     <>
@@ -35,7 +64,10 @@ export default function IndexPage() {
               coffee served in cups featuring your event branding, creating a
               unique and memorable experience for your attendees.
             </p>
-            <Button style="primary" to="https://www.typeform.com">
+            <Button
+              style="primary"
+              to="https://od3lfuetkam.typeform.com/to/T4fHQoQJ"
+            >
               Get a Free Quote
             </Button>
           </div>
@@ -76,7 +108,6 @@ export default function IndexPage() {
           </div>
         </section>
 
-        {/* Our Services Section */}
         <section className="our-services">
           <h2>Our Services</h2>
           <div className="service-list">
@@ -129,27 +160,9 @@ export default function IndexPage() {
             </div>
           </div>
         </section>
-
-        {/* Testimonials Section */}
-        <section className="testimonials">
-          <h2>What Our Clients Say</h2>
-          <div className="testimonial-list">
-            <div className="testimonial-item">
-              <p>
-                Buf Barista made our trade show booth the talk of the event! The
-                coffee was excellent, and the branded cups were a hit.
-              </p>
-              <p>- Jane Doe, Event Organizer</p>
-            </div>
-            <div className="testimonial-item">
-              <p>
-                Our booth saw a significant increase in traffic thanks to Buf
-                Barista. The coffee was delicious, and the service was
-                outstanding.
-              </p>
-              <p>- John Smith, Marketing Director</p>
-            </div>
-          </div>
+        <section className="faq">
+          <h2 className="faq-heading">Frequently Asked Questions</h2>
+          <Accordion data={faqData} />
         </section>
 
         <section className="contact">
@@ -158,7 +171,10 @@ export default function IndexPage() {
             Ready to boost your event with Buf Barista? Get in touch with us
             today for a free quote!
           </p>
-          <Button style="primary" to="https://www.typeform.com">
+          <Button
+            style="primary"
+            to="https://od3lfuetkam.typeform.com/to/T4fHQoQJ"
+          >
             Get a Free Quote
           </Button>
         </section>
@@ -280,9 +296,8 @@ export default function IndexPage() {
             font-size: 1.2rem;
             line-height: 1.6;
             color: var(--font-color-text);
+            
           }
-
-
           .benefit-item,
           .service-card,
           .step,
@@ -296,8 +311,25 @@ export default function IndexPage() {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             background-color: white;
             animation: fadeInUp 1s ease-in-out;
-
           }
+
+          .faq {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: left; 
+            margin-bottom: 40px;
+          }
+
+          .faq-heading {
+            color: var(--font-color-heading);
+            margin-bottom: 2rem;
+            animation: slideInLeft 1s ease-in-out;
+            text-align: center;
+          }
+
 
           .benefit-item:hover,
           .service-card:hover,
