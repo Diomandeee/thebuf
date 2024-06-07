@@ -146,15 +146,19 @@ export default function IndexPage() {
             today for a free quote!
           </p>
           <div className="button-group">
-            <Button
-              style="primary"
-              to="https://od3lfuetkam.typeform.com/to/T4fHQoQJ"
-            >
-              Get a Quote
-            </Button>
-            <Button style="ghost" to="/faq">
-              FAQ
-            </Button>
+            <div>
+              <Button
+                style="primary"
+                to="https://od3lfuetkam.typeform.com/to/T4fHQoQJ"
+              >
+                Get a Quote
+              </Button>
+            </div>
+            <div style={{ marginTop: '10px' }}>
+              <Button style="ghost" to="/faq">
+                FAQ
+              </Button>
+            </div>
           </div>
         </section>
         <style>{`
@@ -372,16 +376,16 @@ export default function IndexPage() {
     margin-bottom: 1.5rem;
   }
   .button-group {
-    display: flex;
+    display: row;
     justify-content: center;
     gap: 20px;
     margin-top: 20px;
   }
 
-  // @media (max-width: 768px) {
-  //   .button-group {
-  //     flex-direction: row;
-  //   }
+  @media (max-width: 768px) {
+    .button-group {
+      flex-direction: row;
+    }
 
   @media (max-width: 768px) {
     .hero {
