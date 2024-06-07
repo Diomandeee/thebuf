@@ -150,7 +150,7 @@ export default function IndexPage() {
               style="primary"
               to="https://od3lfuetkam.typeform.com/to/T4fHQoQJ"
             >
-              Get a Free Estimate
+              Get a Quote
             </Button>
             <Button style="ghost" to="/faq">
               FAQ
@@ -377,6 +377,12 @@ export default function IndexPage() {
     gap: 20px;
     margin-top: 20px;
   }
+
+  // @media (max-width: 768px) {
+  //   .button-group {
+  //     flex-direction: row;
+  //   }
+
   @media (max-width: 768px) {
     .hero {
       flex-direction: column;
