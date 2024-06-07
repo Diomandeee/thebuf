@@ -41,11 +41,11 @@ export default function ContactPage() {
           </ul>
 
           <p className="section-title">
-            I'm looking forward to hearing from you!
+            I am looking forward to hearing from you!
           </p>
         </section>
 
-        <style jsx>{`
+        <style>{`
           @keyframes fadeIn {
             from {
               opacity: 0;
