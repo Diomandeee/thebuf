@@ -55,21 +55,21 @@ export default function IndexPage() {
         <section className="benefits">
           <h2>Why Choose Buf Barista?</h2>
           <div className="benefit-list">
-            <div className="benefit-item">
+            <div className="benefit-item center">
               <h3>Increase Foot Traffic</h3>
               <p>
                 Our custom espresso service draws more attendees to your booth,
                 providing more opportunities for engagement.
               </p>
             </div>
-            <div className="benefit-item">
+            <div className="benefit-item center">
               <h3>Enhanced Brand Visibility</h3>
               <p>
                 Cups featuring your logo and event branding serve as powerful
                 marketing tools, enhancing brand recognition.
               </p>
             </div>
-            <div className="benefit-item">
+            <div className="benefit-item center">
               <h3>Memorable Experiences</h3>
               <p>
                 Providing complimentary high-quality espresso drinks leaves a
@@ -89,21 +89,21 @@ export default function IndexPage() {
         <section className="our-services">
           <h2>Our Services</h2>
           <div className="service-list">
-            <div className="service-card">
+            <div className="service-card center">
               <h3>Mobile Espresso Bars</h3>
               <p>
                 Bring our mobile espresso bars to your event for a unique coffee
                 experience.
               </p>
             </div>
-            <div className="service-card">
+            <div className="service-card center">
               <h3>Specialty Coffee Stations</h3>
               <p>
                 Setup specialty coffee stations featuring a variety of brews and
                 flavors.
               </p>
             </div>
-            <div className="service-card">
+            <div className="service-card center">
               <h3>Customized Beverage Menus</h3>
               <p>
                 Create custom beverage menus tailored to your event and
@@ -116,19 +116,19 @@ export default function IndexPage() {
         <section className="how-it-works">
           <h2>How It Works</h2>
           <div className="how-it-works-steps">
-            <div className="step">
+            <div className="step center">
               <Image src={Step1} alt="Contact Us" width={80} height={80} />
               <h3>1. Contact Us</h3>
               <p>Discuss your event details and requirements with us.</p>
             </div>
-            <div className="step">
+            <div className="step center">
               <Image src={Step2} alt="Custom Design" width={80} height={80} />
               <h3>2. Custom Design</h3>
               <p>
                 We design and print custom coffee cups featuring your branding.
               </p>
             </div>
-            <div className="step">
+            <div className="step center">
               <Image src={Step3} alt="Setup & Serve" width={80} height={80} />
               <h3>3. Setup & Serve</h3>
               <p>
@@ -294,8 +294,8 @@ export default function IndexPage() {
   }
 
   .center {
-    margin: 0 auto;
-    max-width: 35%;
+    text-align: center;
+
   }
   
   .benefit-item,
