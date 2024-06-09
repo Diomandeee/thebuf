@@ -42,26 +42,6 @@ export default function BrandingPage() {
           </div>
         </section>
 
-        {/* Drink Branding Section */}
-        <section className="section drink-branding-section">
-          <div className="drink-branding-content">
-            <h2>🥤 DRINK BRANDING</h2>
-            <p>
-              Make every sip memorable with our drink branding service. Imagine
-              your logo or special message floating on top of each drink as an
-              edible, drinkable icing print.
-            </p>
-          </div>
-          <div className="drink-branding-image">
-            <Image
-              src={Sleeves}
-              alt="Drink Branding"
-              width={400}
-              height={400}
-            />
-          </div>
-        </section>
-
         {/* Our Custom Branding Features Section */}
         <section className="section menu">
           <h2 className="section-title">🎨 Our Custom Branding Features</h2>

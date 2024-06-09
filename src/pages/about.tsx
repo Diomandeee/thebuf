@@ -15,27 +15,21 @@ export default function AboutUsPage() {
 
       <Page
         title="Who Are We"
-        description="Learn more about Buf Barista"
+        description="At Buf Barista, we believe that coffee is more than just a drink—it
+        is an experience. Our mission is to elevate your event with
+        exceptional coffee service that delights your guests and creates
+        lasting memories."
         uri={router.route}
         headerCenter
       >
         <section className="menu">
           <div className="menu-section">
-            <div className="menu-section-title">Quality ☕️</div>
-            <p>
-              We source only the finest coffee beans from around the world,
-              carefully selecting and roasting them to achieve the perfect
-              balance of flavors and aromas.
-            </p>
-          </div>
-
-          <div className="menu-section">
             <div className="menu-section-title">Customization 🎨</div>
             <p>
-              At Buf Barista, we understand that every event is unique. That is
-              why we offer custom branding and personalization options, allowing
-              you to add your logo or custom design to our cups, creating a
-              lasting impression for your guests.
+              We understand that every event is unique. That is why we offer
+              custom branding and personalization options, allowing you to add
+              your logo or custom design to our cups, creating a lasting
+              impression for your guests.
             </p>
           </div>
 
@@ -93,6 +87,16 @@ export default function AboutUsPage() {
               opacity: 1;
               transform: translateY(0);
             }
+          }
+
+          .story {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 1s ease-in-out;
+            border: 10px solid #f5f5f5;
+            border-radius: 16px;
           }
 
           .menu {
