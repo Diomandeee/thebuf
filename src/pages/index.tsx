@@ -191,7 +191,6 @@ export default function IndexPage() {
     transition: transform 0.8s ease, box-shadow 0.3s ease;
     animation: fadeIn 1s ease-in-out;
     border: 10px solid #f5f5f5;
-
   }
 
   .hero:hover,
@@ -210,7 +209,6 @@ export default function IndexPage() {
     align-items: center;
     justify-content: space-between;
     animation: fadeIn 1s ease-in-out;
-
   }
 
   .hero-content {
@@ -277,7 +275,6 @@ export default function IndexPage() {
     justify-content: center;
     gap: 20px;
     text-align: left;
-    
   }
 
   .service-card h3,
@@ -286,7 +283,6 @@ export default function IndexPage() {
     margin-bottom: 1rem;
     color: var(--color-secondary);
     animation: zoomIn 1s ease-in-out;
-
   }
 
   .benefit-item p,
@@ -299,9 +295,8 @@ export default function IndexPage() {
 
   .center {
     text-align: center;
-
   }
-  
+
   .benefit-item,
   .service-card,
   .step,
@@ -327,8 +322,6 @@ export default function IndexPage() {
     margin-bottom: 40px;
     border: 10px solid #f5f5f5;
     animation: fadeIn 1s ease-in-out;
-
-
   }
 
   .faq-heading {
@@ -336,7 +329,6 @@ export default function IndexPage() {
     margin-bottom: 2rem;
     animation: slideInLeft 1s ease-in-out;
     text-align: center;
-
   }
 
   .benefit-item:hover,
@@ -375,8 +367,9 @@ export default function IndexPage() {
   .contact p {
     margin-bottom: 1.5rem;
   }
+
   .button-group {
-    display: row;
+    display: flex;
     justify-content: center;
     gap: 20px;
     margin-top: 20px;
@@ -387,7 +380,6 @@ export default function IndexPage() {
       flex-direction: row;
     }
 
-  @media (max-width: 768px) {
     .hero {
       flex-direction: column;
       text-align: center;
@@ -407,11 +399,6 @@ export default function IndexPage() {
     }
   }
 
-  .button-group {
-    flex-direction: row;
-    gap: 10px;
-
-  }
   @keyframes fadeIn {
     from {
       opacity: 0;
@@ -462,6 +449,17 @@ export default function IndexPage() {
     }
     to {
       transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes zoomIn {
+    from {
+      transform: scale(0);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
       opacity: 1;
     }
   }

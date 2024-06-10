@@ -3,7 +3,6 @@ import Head from 'next/head'
 import Page from '@shared/Page'
 import Button from '@shared/atoms/Button'
 import { useRouter } from 'next/router'
-import Sleeves from '@images/sleeves.jpeg'
 import Custom from '@images/branding.jpeg'
 import Image from 'next/image'
 
