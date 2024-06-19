@@ -2,6 +2,7 @@ import React from 'react'
 import Head from 'next/head'
 import Page from '@shared/Page'
 import Accordion from 'src/components/Accordion'
+import Button from '@shared/atoms/Button'
 
 export default function FaqPage() {
   const faqData = [
@@ -40,14 +41,18 @@ export default function FaqPage() {
 
       <Page
         title="Frequently Asked Questions"
-        description="Buf Barista - Custom Coffee FAQ"
+        description="Buf Barista FAQ"
         uri="/faq"
         headerCenter
       >
         <section className="faq">
-          <h2 className="faq-heading">Frequently Asked Questions</h2>
           <Accordion data={faqData} />
         </section>
+        <div className="faq-button">
+          <Button style="primary" to="/">
+            Back to Home
+          </Button>
+        </div>
 
         <style>{`
           .faq {
@@ -62,6 +67,10 @@ export default function FaqPage() {
             animation: fadeIn 1s ease-in-out;
           }
 
+          .faq-button {
+            text-align: center;
+            margin-top: 2rem;
+          }
           .faq-heading {
             color: var(--font-color-heading);
             margin-bottom: 2rem;
