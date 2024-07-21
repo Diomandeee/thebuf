@@ -6,12 +6,12 @@
   "copyright": "All Rights Reserved. Powered by ",
   "menu": [
     {
-      "name": "Menu",
-      "link": "/menu"
+      "name": "Service",
+      "link": "/services"
     },
     {
-      "name": "Branding",
-      "link": "/branding"
+      "name": "Calculator",
+      "link": "/calculator"
     },
     {
       "name": "About",

@@ -25,10 +25,37 @@ export default function HireYourselfBarista() {
 
       <Page
         title="Hire Yourself as a Barista"
-        description="Why pay a coffee shop daily when you can invest in yourself? With Buf Barista, you can become your own personal barista."
+        description="Invest in your coffee journey and become your own personal barista"
         uri={router.route}
         headerCenter
       >
+        <section className="hero">
+          <div className="hero-content">
+            <h1 className="headline">Hire Yourself as a Barista</h1>
+            <h2 className="subheadline">Invest in Your Coffee Journey</h2>
+            <p className="intro">
+              Why pay a coffee shop daily when you can invest in yourself? With
+              Buf Barista's premium subscription and top-quality equipment, you
+              can become your own personal barista. Save money, gain skills, and
+              enjoy cafe-quality coffee at home!
+            </p>
+            <Button
+              style="primary"
+              to="https://buf-barista.com/hire-yourself-subscription"
+            >
+              Start Your Barista Journey
+            </Button>
+          </div>
+          <div className="hero-image">
+            <Image
+              src={HireYourselfHero}
+              alt="Hire Yourself as a Barista"
+              width={700}
+              height={700}
+            />
+          </div>
+        </section>
+
         <section className="features">
           <h2>Why Hire Yourself?</h2>
           <div className="feature-list">
@@ -246,7 +273,6 @@ export default function HireYourselfBarista() {
             margin-bottom: 2rem;
             line-height: 1.6;
             font-size: 1.1rem;
-            color: #fff8dc;
           }
 
           .feature-list,
