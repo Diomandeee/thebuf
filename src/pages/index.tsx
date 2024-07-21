@@ -3,8 +3,6 @@ import Head from 'next/head'
 import Page from '@shared/Page'
 import Button from '@shared/atoms/Button'
 import { useRouter } from 'next/router'
-import Image from 'next/image'
-import HireYourselfHero from '@images/coffee-and-dance.png'
 import {
   FaCoffee,
   FaPiggyBank,
@@ -69,7 +67,7 @@ export default function HireYourselfBarista() {
               </ul>
               <p className="price">From $39/month</p>
               <Button
-                style="secondary"
+                style="primary"
                 to="https://buf-barista.com/starter-barista"
               >
                 Get Started
@@ -84,10 +82,7 @@ export default function HireYourselfBarista() {
                 <li>Monthly live online class</li>
               </ul>
               <p className="price">From $69/month</p>
-              <Button
-                style="secondary"
-                to="https://buf-barista.com/home-barista"
-              >
+              <Button style="primary" to="https://buf-barista.com/home-barista">
                 Level Up
               </Button>
             </div>
@@ -101,7 +96,7 @@ export default function HireYourselfBarista() {
               </ul>
               <p className="price">From $119/month</p>
               <Button
-                style="secondary"
+                style="primary"
                 to="https://buf-barista.com/master-barista"
               >
                 Master Coffee
@@ -192,7 +187,7 @@ export default function HireYourselfBarista() {
           </Button>
         </section>
 
-        <style jsx>{`
+        <style>{`
           .hero,
           .features,
           .subscription-tiers,

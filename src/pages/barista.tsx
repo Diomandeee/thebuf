@@ -35,7 +35,7 @@ export default function HireYourselfBarista() {
             <h2 className="subheadline">Invest in Your Coffee Journey</h2>
             <p className="intro">
               Why pay a coffee shop daily when you can invest in yourself? With
-              Buf Barista's premium subscription and top-quality equipment, you
+              Buf Barista premium subscription and top-quality equipment, you
               can become your own personal barista. Save money, gain skills, and
               enjoy cafe-quality coffee at home!
             </p>
@@ -96,7 +96,7 @@ export default function HireYourselfBarista() {
               </ul>
               <p className="price">From $39/month</p>
               <Button
-                style="secondary"
+                style="primary"
                 to="https://buf-barista.com/starter-barista"
               >
                 Get Started
@@ -111,10 +111,7 @@ export default function HireYourselfBarista() {
                 <li>Monthly live online class</li>
               </ul>
               <p className="price">From $69/month</p>
-              <Button
-                style="secondary"
-                to="https://buf-barista.com/home-barista"
-              >
+              <Button style="primary" to="https://buf-barista.com/home-barista">
                 Level Up
               </Button>
             </div>
@@ -128,7 +125,7 @@ export default function HireYourselfBarista() {
               </ul>
               <p className="price">From $119/month</p>
               <Button
-                style="secondary"
+                style="primary"
                 to="https://buf-barista.com/master-barista"
               >
                 Master Coffee
@@ -219,7 +216,7 @@ export default function HireYourselfBarista() {
           </Button>
         </section>
 
-        <style jsx>{`
+        <style>{`
           .hero,
           .features,
           .subscription-tiers,
@@ -242,6 +239,11 @@ export default function HireYourselfBarista() {
             justify-content: space-between;
             background: linear-gradient(135deg, #6f4e37 0%, #d2691e 100%);
             color: white;
+          }
+          h2 {
+            color: #6f4e37;
+            margin-bottom: 2rem;
+            font-size: 2.2rem;
           }
 
           .hero-content {

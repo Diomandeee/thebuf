@@ -14,10 +14,8 @@ import {
   ResponsiveContainer,
   AreaChart,
   Area,
-  Bar,
-  ComposedChart
+  TooltipProps
 } from 'recharts'
-import { Coffee, DollarSign, TrendingUp, Droplet, Wind } from 'lucide-react'
 
 const brevilleMachines = [
   { name: 'Breville Barista Express', price: 549, monthlyPayment: 23 },
@@ -31,7 +29,23 @@ const subscriptionTiers = [
   { name: 'Master Barista', price: 114, bagsPerMonth: 6, cupsPerBag: 12 }
 ]
 
-const CustomTooltip = ({ active, payload, label }) => {
+interface CalculationResults {
+  monthlySavings: number
+  monthlySavingsAfterFinancing: number
+  yearlySavings: number
+  breakEvenMonths: number
+  fiveYearSavings: number
+  lifetimeSavings: number
+  annualROI: number
+  cupsPerMonth: number
+  additionalCoffeeShopVisits: number
+}
+
+const CustomTooltip: React.FC<TooltipProps<number, string>> = ({
+  active,
+  payload,
+  label
+}) => {
   if (active && payload && payload.length) {
     return (
       <div className="custom-tooltip">
@@ -79,11 +93,20 @@ function SavingsCalculator() {
   const [selectedMachine, setSelectedMachine] = useState(brevilleMachines[0])
   const [selectedTier, setSelectedTier] = useState(subscriptionTiers[0])
   const [financingMonths, setFinancingMonths] = useState(24)
-  const [results, setResults] = useState({})
+  const [results, setResults] = useState<CalculationResults>({
+    monthlySavings: 0,
+    monthlySavingsAfterFinancing: 0,
+    yearlySavings: 0,
+    breakEvenMonths: 0,
+    fiveYearSavings: 0,
+    lifetimeSavings: 0,
+    annualROI: 0,
+    cupsPerMonth: 0,
+    additionalCoffeeShopVisits: 0
+  })
   const [chartData, setChartData] = useState([])
   const [activeTab, setActiveTab] = useState('savings')
   const [expandedDataPoint, setExpandedDataPoint] = useState(null)
-  const [environmentalImpact, setEnvironmentalImpact] = useState({})
 
   const calculateSavings = () => {
     const weeklySpend = dailySpend * daysPerWeek
@@ -141,17 +164,6 @@ function SavingsCalculator() {
       additionalCoffeeShopVisits
     })
 
-    const disposableCupsPerYear = daysPerWeek * 52
-    const cupsOfCoffeePerYear = disposableCupsPerYear
-    const waterSavedPerYear = cupsOfCoffeePerYear * 0.25 // Assuming 0.25 liters per cup
-    const co2ReductionPerYear = disposableCupsPerYear * 0.033 // Assuming 33g CO2 per disposable cup
-
-    setEnvironmentalImpact({
-      disposableCupsSaved: disposableCupsPerYear,
-      waterSaved: waterSavedPerYear,
-      co2Reduction: co2ReductionPerYear
-    })
-
     const data = []
     for (let year = 0; year <= 10; year++) {
       const coffeeShopCost = yearlySpend * year
@@ -184,10 +196,7 @@ function SavingsCalculator() {
         'Home Barista': homeBaristaInvestmentWithMachineReplacement,
         'Cumulative Savings': cumulativeSavings,
         'Yearly ROI': yearlyROI,
-        'Monthly Savings': monthlySavingsForYear,
-        'Disposable Cups Saved': environmentalImpact.disposableCupsSaved * year,
-        'Water Saved (L)': environmentalImpact.waterSaved * year,
-        'CO2 Reduction (kg)': (environmentalImpact.co2Reduction * year) / 1000
+        'Monthly Savings': monthlySavingsForYear
       })
     }
     setChartData(data)
@@ -195,18 +204,18 @@ function SavingsCalculator() {
 
   useEffect(() => {
     calculateSavings()
-  }, [dailySpend, daysPerWeek, selectedMachine, selectedTier, financingMonths])
-
+  }, [
+    dailySpend,
+    daysPerWeek,
+    selectedMachine,
+    selectedTier,
+    financingMonths,
+    calculateSavings
+  ])
   const handleInputChange = (setter) => (e) => {
     const value =
       e.target.type === 'number' ? Number(e.target.value) : e.target.value
     setter(value)
-  }
-
-  const handleDataPointClick = (data) => {
-    setExpandedDataPoint(
-      expandedDataPoint && expandedDataPoint.year === data.year ? null : data
-    )
   }
 
   return (
@@ -215,16 +224,13 @@ function SavingsCalculator() {
         <div className="input-section">
           <h3 className="section-title">Your Coffee Habits</h3>
           <div className="input-group">
-            <label htmlFor="dailySpend">
-              <Coffee size={20} />
-              Average spend per coffee ($)
-            </label>
+            <label htmlFor="dailySpend">Average spend per coffee ($)</label>
             <div className="input-wrapper">
               <input
                 type="range"
                 id="dailySpend"
                 min="1"
-                max="10"
+                max="20"
                 step="0.5"
                 value={dailySpend}
                 onChange={handleInputChange(setDailySpend)}
@@ -240,10 +246,7 @@ function SavingsCalculator() {
             </div>
           </div>
           <div className="input-group">
-            <label htmlFor="daysPerWeek">
-              <Coffee size={20} />
-              Coffee days per week
-            </label>
+            <label htmlFor="daysPerWeek">Coffee days per week</label>
             <div className="input-wrapper">
               <input
                 type="range"
@@ -265,10 +268,7 @@ function SavingsCalculator() {
             </div>
           </div>
           <div className="input-group">
-            <label htmlFor="machine">
-              <Coffee size={20} />
-              Preferred Breville machine
-            </label>
+            <label htmlFor="machine">Preferred Breville machine</label>
             <select
               id="machine"
               value={selectedMachine.name}
@@ -286,10 +286,7 @@ function SavingsCalculator() {
             </select>
           </div>
           <div className="input-group">
-            <label htmlFor="tier">
-              <Coffee size={20} />
-              Subscription Tier
-            </label>
+            <label htmlFor="tier">Subscription Tier</label>
             <select
               id="tier"
               value={selectedTier.name}
@@ -307,10 +304,7 @@ function SavingsCalculator() {
             </select>
           </div>
           <div className="input-group">
-            <label htmlFor="financing">
-              <DollarSign size={20} />
-              Financing period (months)
-            </label>
+            <label htmlFor="financing">Financing period (months)</label>
             <div className="input-wrapper">
               <input
                 type="range"
@@ -357,10 +351,7 @@ function SavingsCalculator() {
             </div>
           </div>
           <div className="long-term-benefits">
-            <h5>
-              <TrendingUp size={20} />
-              Long-term Benefits
-            </h5>
+            <h5>Long-term Benefits</h5>
             <p>
               10-Year Lifetime Savings:{' '}
               <span>${results.lifetimeSavings?.toFixed(2)}</span>
@@ -371,36 +362,9 @@ function SavingsCalculator() {
             </p>
           </div>
           <div className="subscription-details">
-            <h5>
-              <Coffee size={20} />
-              Subscription Details
-            </h5>
+            <h5>Subscription Details</h5>
             <p>
               Cups of coffee per month: <span>{results.cupsPerMonth}</span>
-            </p>
-            <p>
-              Additional coffee shop visits per month:{' '}
-              <span>{Math.round(results.additionalCoffeeShopVisits)}</span>
-            </p>
-          </div>
-          <div className="environmental-impact">
-            <h5>
-              <Droplet size={20} />
-              Environmental Impact (10 Years)
-            </h5>
-            <p>
-              Disposable Cups Saved:{' '}
-              <span>{environmentalImpact.disposableCupsSaved * 10}</span>
-            </p>
-            <p>
-              Water Saved:{' '}
-              <span>{(environmentalImpact.waterSaved * 10).toFixed(2)} L</span>
-            </p>
-            <p>
-              CO2 Reduction:{' '}
-              <span>
-                {((environmentalImpact.co2Reduction * 10) / 1000).toFixed(2)} kg
-              </span>
             </p>
           </div>
         </div>
@@ -427,12 +391,7 @@ function SavingsCalculator() {
           >
             Return on Investment
           </button>
-          <button
-            onClick={() => setActiveTab('environmental')}
-            className={activeTab === 'environmental' ? 'active' : ''}
-          >
-            Environmental Impact
-          </button>
+
           <button
             onClick={() => setActiveTab('monthlySavings')}
             className={activeTab === 'monthlySavings' ? 'active' : ''}
@@ -488,35 +447,7 @@ function SavingsCalculator() {
               </AreaChart>
             </ResponsiveContainer>
           )}
-          {activeTab === 'environmental' && (
-            <ResponsiveContainer width="100%" height={400}>
-              <ComposedChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="year" />
-                <YAxis yAxisId="left" />
-                <YAxis yAxisId="right" orientation="right" />
-                <Tooltip content={<CustomTooltip />} />
-                <Legend />
-                <Bar
-                  yAxisId="left"
-                  dataKey="Disposable Cups Saved"
-                  fill="#8884d8"
-                />
-                <Line
-                  yAxisId="right"
-                  type="monotone"
-                  dataKey="Water Saved (L)"
-                  stroke="#82ca9d"
-                />
-                <Line
-                  yAxisId="right"
-                  type="monotone"
-                  dataKey="CO2 Reduction (kg)"
-                  stroke="#ffc658"
-                />
-              </ComposedChart>
-            </ResponsiveContainer>
-          )}
+
           {activeTab === 'monthlySavings' && (
             <ResponsiveContainer width="100%" height={400}>
               <LineChart data={chartData}>
@@ -536,7 +467,7 @@ function SavingsCalculator() {
         </div>
         {expandedDataPoint && <DetailedAnalysis data={expandedDataPoint} />}
       </div>
-      <style jsx>{`
+      <style>{`
         .calculator {
           background-color: #f8f9fa;
           padding: 40px;
@@ -611,23 +542,29 @@ function SavingsCalculator() {
           background: #6f4e37;
           cursor: pointer;
         }
-
-        .input-group input[type='range']::-moz-range-thumb {
-          width: 20px;
-          height: 20px;
+        .input-group.large-select select {
+          width: 100%;
+          padding: 12px;
+          font-size: 16px;
+          border: 2px solid #d1d5db;
           border-radius: 50%;
-          background: #6f4e37;
+          background-color: white;
+          color: #4a5568;
           cursor: pointer;
+          transition: all 0.3s ease;
         }
 
-        .input-group input[type='number'],
-        .input-group select {
-          width: 80px;
-          padding: 8px;
-          border: 1px solid #d1d5db;
-          border-radius: 5px;
-          font-size: 16px;
-          color: #4a5568;
+        .input-group.large-select select:hover,
+        .input-group.large-select select:focus {
+          border-color: #6f4e37;
+          box-shadow: 0 0 0 2px rgba(111, 78, 55, 0.2);
+          border-radius: 50%;
+        }
+
+        .input-group.large-select label {
+          font-size: 1.1rem;
+          margin-bottom: 8px;
+          color: #2d3748;
         }
 
         .results-grid {
@@ -673,31 +610,34 @@ function SavingsCalculator() {
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
+        .long-term-benefits,
+        .subscription-details {
+          margin-top: 30px;
+          background-color: #f8f9fa;
+          border-radius: 10px;
+          padding: 20px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
         .long-term-benefits h5,
-        .environmental-impact h5,
         .subscription-details h5 {
           color: #4a5568;
           margin-bottom: 15px;
           font-size: 1.2rem;
-          display: flex;
-          align-items: center;
-          gap: 10px;
+          text-align: center; /* Center the h5 tags */
         }
 
         .long-term-benefits p,
-        .environmental-impact p,
         .subscription-details p {
           color: #4a5568;
           margin-bottom: 10px;
         }
 
         .long-term-benefits span,
-        .environmental-impact span,
         .subscription-details span {
           font-weight: bold;
           color: #6f4e37;
         }
-
         .chart-section {
           margin-top: 40px;
           background-color: white;
@@ -804,7 +744,7 @@ export default function HireYourselfBarista() {
           </Button>
         </section>
 
-        <style jsx>{`
+        <style>{`
           .calculator-section,
           .cta {
             padding: 60px 40px;
