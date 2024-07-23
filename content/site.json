@@ -1,27 +1,10 @@
 {
-  "siteTitle": "Buf Barista",
+  "siteTitle": "The Buf Barista",
   "siteTagline": "Sip, Sweet and Shimmy",
   "siteUrl": "https://synergetic-studio.vercel.app/",
   "siteImage": "/share.png",
   "copyright": "All Rights Reserved. Powered by ",
-  "menu": [
-    {
-      "name": "Services",
-      "link": "/services"
-    },
-    {
-      "name": "Calculator",
-      "link": "/calculator"
-    },
-    {
-      "name": "About",
-      "link": "/about"
-    },
-    {
-      "name": "Contact",
-      "link": "/contact"
-    }
-  ],
+  "menu": [],
 
   "announcement": " ",
   "warning": {
