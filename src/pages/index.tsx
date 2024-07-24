@@ -165,42 +165,42 @@ function SavingsCalculator() {
       yearlySavings * 5 - selectedMachine.price
     )
 
-    const totalCostComparison = []
-    let coffeeShopCumulativeCost = 0
-    let homeBaristaSetupCost = selectedMachine.price // Include initial machine cost
-    let homeBaristaMaintenanceCost = 250 // Estimated yearly maintenance cost
-    let homeBaristaReplacementCost = 0 // Cost to replace machine after 5 years
-    let homeBaristaVariableCost = 0
+    // const totalCostComparison = []
+    // let coffeeShopCumulativeCost = 0
+    // let homeBaristaSetupCost = selectedMachine.price // Include initial machine cost
+    // let homeBaristaMaintenanceCost = 250 // Estimated yearly maintenance cost
+    // let homeBaristaReplacementCost = 0 // Cost to replace machine after 5 years
+    // let homeBaristaVariableCost = 0
 
-    for (let year = 0; year <= 10; year++) {
-      coffeeShopCumulativeCost = yearlySpend * year
-      homeBaristaVariableCost =
-        (monthlySubscriptionCost + additionalCoffeeShopCost) * 12 * year
+    // for (let year = 0; year <= 10; year++) {
+    //   coffeeShopCumulativeCost = yearlySpend * year
+    //   homeBaristaVariableCost =
+    //     (monthlySubscriptionCost + additionalCoffeeShopCost) * 12 * year
 
-      // Add maintenance cost each year
-      homeBaristaVariableCost += homeBaristaMaintenanceCost * year
+    //   // Add maintenance cost each year
+    //   homeBaristaVariableCost += homeBaristaMaintenanceCost * year
 
-      // Replace machine after 5 years
-      if (year > 5) {
-        homeBaristaReplacementCost = selectedMachine.price
-      }
+    //   // Replace machine after 5 years
+    //   if (year > 5) {
+    //     homeBaristaReplacementCost = selectedMachine.price
+    //   }
 
-      const homeBaristaTotal =
-        homeBaristaSetupCost +
-        homeBaristaVariableCost +
-        homeBaristaReplacementCost
+    //   const homeBaristaTotal =
+    //     homeBaristaSetupCost +
+    //     homeBaristaVariableCost +
+    //     homeBaristaReplacementCost
 
-      totalCostComparison.push({
-        year,
-        'Coffee Shop': Math.round(coffeeShopCumulativeCost),
-        'Home Barista': Math.round(homeBaristaTotal),
-        'Cumulative Savings': Math.round(
-          coffeeShopCumulativeCost - homeBaristaTotal
-        )
-      })
-    }
+    //   totalCostComparison.push({
+    //     year,
+    //     'Coffee Shop': Math.round(coffeeShopCumulativeCost),
+    //     'Home Barista': Math.round(homeBaristaTotal),
+    //     'Cumulative Savings': Math.round(
+    //       coffeeShopCumulativeCost - homeBaristaTotal
+    //     )
+    //   })
+    // }
 
-    setTotalCostComparison(totalCostComparison)
+    // setTotalCostComparison(totalCostComparison)
 
     // Check if there are no savings and set a warning message
     if (monthlySavings <= 0) {
