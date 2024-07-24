@@ -100,7 +100,7 @@ function SavingsCalculator() {
   const [daysPerWeek, setDaysPerWeek] = useState(5)
   const [selectedMachine, setSelectedMachine] = useState(brevilleMachines[0])
   const [selectedTier, setSelectedTier] = useState(subscriptionTiers[0])
-  const [financingMonths, setFinancingMonths] = useState(24)
+  const [financingMonths, setFinancingMonths] = useState(4)
   const [results, setResults] = useState<CalculationResults>({
     monthlySavings: 0,
     monthlySavingsAfterFinancing: 0,
@@ -480,12 +480,16 @@ function SavingsCalculator() {
         color: #fff8dc;
         margin-bottom: 1.5rem;
       }
-        .calculator {
-          background-color: #f8f9fa;
-          padding: 40px;
-          border-radius: 15px;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+      .calculator {
+        background-color: #f8f9fa;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        
+        /* Centering styles */
+        margin: 0 auto; /* This centers the element horizontally */
+        max-width: 800px; /* Adjust max-width as per your design */
+      }
 
         .calculator-content {
           display: flex;
