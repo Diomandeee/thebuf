@@ -96,11 +96,11 @@ function DetailedAnalysis({ data }) {
 }
 
 function SavingsCalculator() {
-  const [dailySpend, setDailySpend] = useState(5)
-  const [daysPerWeek, setDaysPerWeek] = useState(5)
+  const [dailySpend, setDailySpend] = useState(7)
+  const [daysPerWeek, setDaysPerWeek] = useState(7)
   const [selectedMachine, setSelectedMachine] = useState(brevilleMachines[0])
   const [selectedTier, setSelectedTier] = useState(subscriptionTiers[0])
-  const [financingMonths, setFinancingMonths] = useState(4)
+  const [financingMonths, setFinancingMonths] = useState(20)
   const [results, setResults] = useState<CalculationResults>({
     monthlySavings: 0,
     monthlySavingsAfterFinancing: 0,
@@ -115,6 +115,8 @@ function SavingsCalculator() {
   const [chartData, setChartData] = useState([])
   const [activeTab, setActiveTab] = useState('savings')
   const [expandedDataPoint, setExpandedDataPoint] = useState(null)
+  const [warningMessage, setWarningMessage] = useState('')
+  const [totalCostComparison, setTotalCostComparison] = useState([])
 
   const calculateSavings = () => {
     const weeklySpend = dailySpend * daysPerWeek
@@ -122,15 +124,22 @@ function SavingsCalculator() {
     const yearlySpend = monthlySpend * 12
 
     const monthlySubscriptionCost = selectedTier.price
-    const monthlyMachineCost = selectedMachine.price / financingMonths
 
-    // Calculate how many cups of coffee the subscription provides per month
+    // Calculate monthly machine cost with 5% annual interest
+    const annualInterestRate = 0.05
+    const monthlyInterestRate = annualInterestRate / 12
+    const monthlyMachineCost =
+      (selectedMachine.price *
+        monthlyInterestRate *
+        Math.pow(1 + monthlyInterestRate, financingMonths)) /
+      (Math.pow(1 + monthlyInterestRate, financingMonths) - 1)
+
     const cupsPerMonth = selectedTier.bagsPerMonth * selectedTier.cupsPerBag
 
-    // Calculate how many cups the user would typically consume per month
-    const userCupsPerMonth = daysPerWeek * 4.33 // assuming 4.33 weeks per month
+    // More accurate calculation of user cups per month
+    const averageDaysPerMonth = 365.25 / 12 // Accounting for leap years
+    const userCupsPerMonth = daysPerWeek * (averageDaysPerMonth / 7)
 
-    // Calculate the cost of additional coffee shop visits if subscription doesn't cover all needs
     const additionalCoffeeShopVisits = Math.max(
       0,
       userCupsPerMonth - cupsPerMonth
@@ -139,26 +148,84 @@ function SavingsCalculator() {
 
     const totalMonthlyCost =
       monthlySubscriptionCost + monthlyMachineCost + additionalCoffeeShopCost
-    const monthlySavings = monthlySpend - totalMonthlyCost
+    const monthlySavings = Math.max(0, monthlySpend - totalMonthlyCost)
     const yearlySavings = monthlySavings * 12
 
-    // Calculate monthly savings after financing
-    const monthlySavingsAfterFinancing =
+    const monthlySavingsAfterFinancing = Math.max(
+      0,
       monthlySpend - (monthlySubscriptionCost + additionalCoffeeShopCost)
+    )
 
-    const breakEvenMonths = Math.ceil(selectedMachine.price / monthlySavings)
-    const fiveYearSavings = yearlySavings * 5 - selectedMachine.price
+    const breakEvenMonths =
+      monthlySavings > 0
+        ? Math.ceil(selectedMachine.price / monthlySavings)
+        : Infinity
+    const fiveYearSavings = Math.max(
+      0,
+      yearlySavings * 5 - selectedMachine.price
+    )
+
+    const totalCostComparison = []
+    let coffeeShopCumulativeCost = 0
+    let homeBaristaSetupCost = selectedMachine.price // Include initial machine cost
+    let homeBaristaMaintenanceCost = 250 // Estimated yearly maintenance cost
+    let homeBaristaReplacementCost = 0 // Cost to replace machine after 5 years
+    let homeBaristaVariableCost = 0
+
+    for (let year = 0; year <= 10; year++) {
+      coffeeShopCumulativeCost = yearlySpend * year
+      homeBaristaVariableCost =
+        (monthlySubscriptionCost + additionalCoffeeShopCost) * 12 * year
+
+      // Add maintenance cost each year
+      homeBaristaVariableCost += homeBaristaMaintenanceCost * year
+
+      // Replace machine after 5 years
+      if (year > 5) {
+        homeBaristaReplacementCost = selectedMachine.price
+      }
+
+      const homeBaristaTotal =
+        homeBaristaSetupCost +
+        homeBaristaVariableCost +
+        homeBaristaReplacementCost
+
+      totalCostComparison.push({
+        year,
+        'Coffee Shop': Math.round(coffeeShopCumulativeCost),
+        'Home Barista': Math.round(homeBaristaTotal),
+        'Cumulative Savings': Math.round(
+          coffeeShopCumulativeCost - homeBaristaTotal
+        )
+      })
+    }
+
+    setTotalCostComparison(totalCostComparison)
+
+    // Check if there are no savings and set a warning message
+    if (monthlySavings <= 0) {
+      setWarningMessage(
+        "Warning: With the current settings, you're not saving money. Consider adjusting your choices for potential savings."
+      )
+    } else {
+      setWarningMessage('')
+    }
 
     const lifetimeCoffeeShopCost = yearlySpend * 10
     const lifetimeHomeBaristaInvestment =
       selectedMachine.price +
       (monthlySubscriptionCost + additionalCoffeeShopCost) * 12 * 10
-    const lifetimeSavings =
+    const lifetimeSavings = Math.max(
+      0,
       lifetimeCoffeeShopCost - lifetimeHomeBaristaInvestment
+    )
 
     const annualROI =
-      (yearlySavings / (selectedMachine.price + monthlySubscriptionCost * 12)) *
-      100
+      yearlySavings > 0
+        ? (yearlySavings /
+            (selectedMachine.price + monthlySubscriptionCost * 12)) *
+          100
+        : 0
 
     setResults({
       monthlySavings,
@@ -334,8 +401,12 @@ function SavingsCalculator() {
             </div>
           </div>
         </div>
-        <div className="results-section">
+        <div className="And available announced fiasco launch">
           <h3 className="section-title">Your Potential Savings</h3>
+          {warningMessage && (
+            <div className="warning-message">{warningMessage}</div>
+          )}
+
           <div className="results-grid">
             <div className="result-item">
               <h5>Monthly Savings</h5>
@@ -357,6 +428,12 @@ function SavingsCalculator() {
               <h5>5-Year Savings</h5>
               <p>${results.fiveYearSavings?.toFixed(2)}</p>
             </div>
+            <div className="result-item">
+              <h5>Subscription Details</h5>
+              <p>
+                Cups of coffee per month: <span>{results.cupsPerMonth}</span>
+              </p>
+            </div>
           </div>
           <div className="long-term-benefits">
             <h5>Long-term Benefits</h5>
@@ -369,15 +446,8 @@ function SavingsCalculator() {
               <span>{results.annualROI?.toFixed(2)}%</span>
             </p>
           </div>
-          <div className="subscription-details">
-            <h5>Subscription Details</h5>
-            <p>
-              Cups of coffee per month: <span>{results.cupsPerMonth}</span>
-            </p>
-          </div>
         </div>
       </div>
-
       <div className="chart-section">
         <h3 className="section-title">Cost Comparison Over Time</h3>
         <div className="chart-tabs">
@@ -406,7 +476,14 @@ function SavingsCalculator() {
           >
             Monthly Savings
           </button>
+          {/* <button
+            onClick={() => setActiveTab('totalCostOwnership')}
+            className={activeTab === 'totalCostOwnership' ? 'active' : ''}
+          >
+            Total Cost of Ownership
+          </button> */}
         </div>
+
         <div className="chart">
           {activeTab === 'savings' && (
             <ResponsiveContainer width="100%" height={400}>
@@ -472,259 +549,324 @@ function SavingsCalculator() {
               </LineChart>
             </ResponsiveContainer>
           )}
+          {activeTab === 'totalCostOwnership' && (
+            <ResponsiveContainer width="100%" height={400}>
+              <LineChart data={totalCostComparison}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="year" />
+                <YAxis />
+                <Tooltip content={<CustomTooltip />} />
+                <Legend />
+                <Line type="monotone" dataKey="Coffee Shop" stroke="#8884d8" />
+                <Line type="monotone" dataKey="Home Barista" stroke="#82ca9d" />
+                <Line
+                  type="monotone"
+                  dataKey="Cumulative Savings"
+                  stroke="#ffc658"
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          )}
         </div>
         {expandedDataPoint && <DetailedAnalysis data={expandedDataPoint} />}
       </div>
       <style>{`
-      .h2 {
-        color: #fff8dc;
-        margin-bottom: 1.5rem;
-      }
-      .calculator {
-        background-color: #f8f9fa;
-        padding: 40px;
-        border-radius: 15px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        
-        /* Centering styles */
-        margin: 0 auto; /* This centers the element horizontally */
-        max-width: 800px; /* Adjust max-width as per your design */
-      }
+.h2 {
+  color: #fff8dc;
+  margin-bottom: 1.5rem;
+}
 
-        .calculator-content {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: space-between;
-          gap: 40px;
-        }
+.calculator {
+  background-color: #f8f9fa;
+  padding: 5%;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  max-width: 1200px;
+  width: 90%;
+}
 
-        .input-section,
-        .results-section {
-          flex: 1;
-          min-width: 300px;
-          background-color: white;
-          padding: 30px;
-          border-radius: 10px;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
+.calculator-content {
+  display: flex;
+  justify-content: space-between;
+  gap: 4%;
+}
 
-        .section-title {
-          font-size: 1.5rem;
-          color: #4a5568;
-          margin-bottom: 20px;
-          text-align: center;
-        }
+.input-section,
+.And.available.announced.fiasco.launch {
+  flex: 1;
+  min-width: 0;
+  background-color: white;
+  padding: 5%;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
 
-        .input-group {
-          margin-bottom: 25px;
-        }
+.section-title {
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
+  color: #4a5568;
+  margin-bottom: 20px;
+  text-align: center;
+}
 
-        .input-group label {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          color: #4a5568;
-          margin-bottom: 10px;
-        }
+.input-group {
+  margin-bottom: 25px;
+}
 
-        .input-wrapper {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-        }
+.input-group label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #4a5568;
+  margin-bottom: 10px;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+}
 
-        .input-group input[type='range'] {
-          flex: 1;
-          -webkit-appearance: none;
-          width: 100%;
-          height: 5px;
-          border-radius: 5px;
-          background: #d1d5db;
-          outline: none;
-          opacity: 0.7;
-          transition: opacity 0.2s;
-        }
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-        .input-group input[type='range']:hover {
-          opacity: 1;
-        }
+.input-group input[type='range'] {
+  flex: 1;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(to right, #6f4e37, #d2691e);
+  outline: none;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
 
-        .input-group input[type='range']::-webkit-slider-thumb {
-          -webkit-appearance: none;
-          appearance: none;
-          width: 20px;
-          height: 20px;
-          border-radius: 50%;
-          background: #6f4e37;
-          cursor: pointer;
-        }
-        .input-group.large-select select {
-          width: 100%;
-          padding: 12px;
-          font-size: 16px;
-          border: 2px solid #d1d5db;
-          border-radius: 50%;
-          background-color: white;
-          color: #4a5568;
-          cursor: pointer;
-          transition: all 0.3s ease;
-        }
+.input-group input[type='range']:hover {
+  opacity: 1;
+}
 
-        .input-group.large-select select:hover,
-        .input-group.large-select select:focus {
-          border-color: #6f4e37;
-          box-shadow: 0 0 0 2px rgba(111, 78, 55, 0.2);
-          border-radius: 50%;
-        }
+.input-group input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #6f4e37;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+.input-group input[type='number'] {
+  width: 60px;
+  padding: 5px;
+  font-size: clamp(0.8rem, 2vw, 1rem);
+}
 
-        .input-group.large-select label {
-          font-size: 1.1rem;
-          margin-bottom: 8px;
-          color: #2d3748;
-        }
+.input-group select {
+  width: 100%;
+  padding: 10px;
+  font-size: clamp(0.8rem, 2vw, 1rem);
+  border: 2px solid #6f4e37;
+  border-radius: 5px;
+  background-color: #f0f4f8;
+  color: #4a5568;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
 
-        .results-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-          gap: 20px;
-          margin-top: 20px;
-        }
+.input-group select:hover,
+.input-group select:focus {
+  border-color: #6f4e37;
+  box-shadow: 0 0 0 2px rgba(111, 78, 55, 0.2);
+}
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 20px;
+}
 
-        .result-item {
-          background-color: #f8f9fa;
-          border-radius: 10px;
-          padding: 20px;
-          text-align: center;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-          transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+.result-item {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-        .result-item:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+.result-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
-        .result-item h5 {
-          color: #4a5568;
-          margin-bottom: 10px;
-          font-size: 1.1rem;
-        }
+.result-item h5 {
+  color: #4a5568;
+  margin-bottom: 10px;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+}
 
-        .result-item p {
-          color: #6f4e37;
-          font-size: 1.4rem;
-          font-weight: bold;
-        }
+.result-item p {
+  color: #6f4e37;
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  font-weight: bold;
+}
 
-        .long-term-benefits,
-        .environmental-impact,
-        .subscription-details {
-          margin-top: 30px;
-          background-color: #f8f9fa;
-          border-radius: 10px;
-          padding: 20px;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
+.long-term-benefits,
+.environmental-impact,
+.subscription-details {
+  margin-top: 30px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
 
-        .long-term-benefits,
-        .subscription-details {
-          margin-top: 30px;
-          background-color: #f8f9fa;
-          border-radius: 10px;
-          padding: 20px;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
+.long-term-benefits h5,
+.subscription-details h5 {
+  color: #4a5568;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+  text-align: center;
+}
 
-        .long-term-benefits h5,
-        .subscription-details h5 {
-          color: #4a5568;
-          margin-bottom: 15px;
-          font-size: 1.2rem;
-          text-align: center; /* Center the h5 tags */
-        }
+.long-term-benefits p,
+.subscription-details p {
+  color: #4a5568;
+  margin-bottom: 10px;
+}
 
-        .long-term-benefits p,
-        .subscription-details p {
-          color: #4a5568;
-          margin-bottom: 10px;
-        }
+.long-term-benefits span,
+.subscription-details span {
+  font-weight: bold;
+  color: #6f4e37;
+}
 
-        .long-term-benefits span,
-        .subscription-details span {
-          font-weight: bold;
-          color: #6f4e37;
-        }
-        .chart-section {
-          margin-top: 40px;
-          background-color: white;
-          padding: 30px;
-          border-radius: 10px;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
+.chart-section {
+  margin-top: 40px;
+  background-color: white;
+  padding: 5%;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
 
-        .chart-tabs {
-          display: flex;
-          justify-content: center;
-          margin-bottom: 20px;
-          flex-wrap: wrap;
-        }
+.chart-tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 
-        .chart-tabs button {
-          background-color: #f8f9fa;
-          border: none;
-          padding: 10px 20px;
-          margin: 5px;
-          border-radius: 5px;
-          cursor: pointer;
-          transition: background-color 0.3s ease, color 0.3s ease;
-          color: #4a5568;
-        }
+.chart-tabs button {
+  background-color: #f8f9fa;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  color: #4a5568;
+  font-size: clamp(0.8rem, 2vw, 1rem);
+}
 
-        .chart-tabs button.active {
-          background-color: #6f4e37;
-          color: white;
-        }
+.chart-tabs button.active {
+  background-color: #6f4e37;
+  color: white;
+}
 
-        .chart {
-          background-color: #f8f9fa;
-          border-radius: 10px;
-          padding: 20px;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
+.chart {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
 
-        .custom-tooltip {
-          background-color: rgba(255, 255, 255, 0.9);
-          border: 1px solid #d1d5db;
-          padding: 15px;
-          border-radius: 5px;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+.custom-tooltip {
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid #d1d5db;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-        .custom-tooltip .label {
-          font-weight: bold;
-          margin-bottom: 10px;
-          color: #4a5568;
-        }
+.custom-tooltip .label {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #4a5568;
+}
 
-        @media (max-width: 768px) {
-          .calculator-content {
-            flex-direction: column;
-          }
+.warning-message {
+  background-color: #fff3cd;
+  color: #856404;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: bold;
+}
 
-          .input-section,
-          .results-section {
-            width: 100%;
-          }
+.total-cost-comparison {
+  margin-top: 40px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-          .chart-tabs {
-            flex-direction: column;
-          }
+.cost-breakdown {
+  margin-top: 20px;
+  text-align: left;
+}
 
-          .chart-tabs button {
-            width: 100%;
-            margin: 5px 0;
-          }
-        }
+.cost-breakdown h4 {
+  margin-bottom: 10px;
+}
+
+.cost-breakdown p {
+  margin: 5px 0;
+}
+
+@media (max-width: 1024px) {
+  .calculator-content {
+    flex-direction: column;
+  }
+
+  .input-section,
+  .And.available.announced.fiasco.launch {
+    width: 100%;
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .calculator {
+    padding: 20px;
+    width: 95%;
+  }
+
+  .results-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-tabs {
+    flex-direction: column;
+  }
+
+  .chart-tabs button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .input-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .input-group input[type='number'] {
+    width: 100%;
+  }
+}
       `}</style>
     </div>
   )
