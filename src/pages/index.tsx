@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import Head from 'next/head'
 import Page from '@shared/Page'
 import Button from '@shared/atoms/Button'
@@ -37,6 +37,18 @@ const subscriptionTiers = [
   { name: 'Master Barista', price: 114, bagsPerMonth: 6, cupsPerBag: 12 }
 ]
 
+const milkOptions = [
+  { value: 'none', label: 'No milk subscription' },
+  {
+    value: 'single',
+    label: 'Single Subscription (6 units, 32oz each, $49.37)'
+  },
+  {
+    value: 'double',
+    label: 'Double Subscription (12 units, 32oz each, $89.00)'
+  }
+]
+
 interface CalculationResults {
   monthlySavings: number
   monthlySavingsAfterFinancing: number
@@ -47,6 +59,7 @@ interface CalculationResults {
   annualROI: number
   cupsPerMonth: number
   additionalCoffeeShopVisits: number
+  monthlyMilkCost: number
 }
 
 const CustomTooltip: React.FC<TooltipProps<number, string>> = ({
@@ -101,6 +114,8 @@ function SavingsCalculator() {
   const [selectedMachine, setSelectedMachine] = useState(brevilleMachines[0])
   const [selectedTier, setSelectedTier] = useState(subscriptionTiers[0])
   const [financingMonths, setFinancingMonths] = useState(20)
+  const [milkDeliveryFrequency, setMilkDeliveryFrequency] = useState(28)
+  const [selectedMilk, setSelectedMilk] = useState('none')
   const [results, setResults] = useState<CalculationResults>({
     monthlySavings: 0,
     monthlySavingsAfterFinancing: 0,
@@ -110,7 +125,8 @@ function SavingsCalculator() {
     lifetimeSavings: 0,
     annualROI: 0,
     cupsPerMonth: 0,
-    additionalCoffeeShopVisits: 0
+    additionalCoffeeShopVisits: 0,
+    monthlyMilkCost: 0
   })
   const [chartData, setChartData] = useState([])
   const [activeTab, setActiveTab] = useState('savings')
@@ -118,14 +134,44 @@ function SavingsCalculator() {
   const [warningMessage, setWarningMessage] = useState('')
   const [totalCostComparison, setTotalCostComparison] = useState([])
 
-  const calculateSavings = () => {
+  // Helper function to calculate IRR (Internal Rate of Return)
+  function IRR(cashFlows, guess = 0.1) {
+    const maxIterations = 1000
+    const tolerance = 1e-6
+
+    for (let i = 0; i < maxIterations; i++) {
+      const npv = cashFlows.reduce(
+        (sum, cashFlow, t) => sum + cashFlow / Math.pow(1 + guess, t),
+        0
+      )
+      if (Math.abs(npv) < tolerance) {
+        return guess
+      }
+      const derivativeNPV = cashFlows.reduce(
+        (sum, cashFlow, t) => sum - (t * cashFlow) / Math.pow(1 + guess, t + 1),
+        0
+      )
+      const nextGuess = guess - npv / derivativeNPV
+      if (Math.abs(nextGuess - guess) < tolerance) {
+        return nextGuess
+      }
+      guess = nextGuess
+    }
+    return null // IRR not found within the maximum number of iterations
+  }
+
+  const calculateSavings = useCallback(() => {
+    const inflationRate = 0.02
+    const annualMaintenanceCost = 50
+    const machineLifespan = 5
+
     const weeklySpend = dailySpend * daysPerWeek
     const monthlySpend = (weeklySpend * 52) / 12
     const yearlySpend = monthlySpend * 12
 
     const monthlySubscriptionCost = selectedTier.price
 
-    // Calculate monthly machine cost with 5% annual interest
+    // Financing calculation
     const annualInterestRate = 0.05
     const monthlyInterestRate = annualInterestRate / 12
     const monthlyMachineCost =
@@ -136,8 +182,8 @@ function SavingsCalculator() {
 
     const cupsPerMonth = selectedTier.bagsPerMonth * selectedTier.cupsPerBag
 
-    // More accurate calculation of user cups per month
-    const averageDaysPerMonth = 365.25 / 12 // Accounting for leap years
+    // User cups calculation
+    const averageDaysPerMonth = 365.25 / 12
     const userCupsPerMonth = daysPerWeek * (averageDaysPerMonth / 7)
 
     const additionalCoffeeShopVisits = Math.max(
@@ -146,86 +192,77 @@ function SavingsCalculator() {
     )
     const additionalCoffeeShopCost = additionalCoffeeShopVisits * dailySpend
 
+    // Calculate monthly milk cost based on delivery frequency
+    let monthlyMilkCost = 0
+    if (selectedMilk === 'single') {
+      monthlyMilkCost = (49.37 / milkDeliveryFrequency) * 30
+    } else if (selectedMilk === 'double') {
+      monthlyMilkCost = (89.0 / milkDeliveryFrequency) * 30
+    }
+
     const totalMonthlyCost =
-      monthlySubscriptionCost + monthlyMachineCost + additionalCoffeeShopCost
+      monthlySubscriptionCost +
+      monthlyMachineCost +
+      additionalCoffeeShopCost +
+      annualMaintenanceCost / 12 +
+      monthlyMilkCost
+
     const monthlySavings = Math.max(0, monthlySpend - totalMonthlyCost)
     const yearlySavings = monthlySavings * 12
 
     const monthlySavingsAfterFinancing = Math.max(
       0,
-      monthlySpend - (monthlySubscriptionCost + additionalCoffeeShopCost)
+      monthlySpend -
+        (monthlySubscriptionCost +
+          additionalCoffeeShopCost +
+          annualMaintenanceCost / 12 +
+          monthlyMilkCost)
     )
 
     const breakEvenMonths =
       monthlySavings > 0
         ? Math.ceil(selectedMachine.price / monthlySavings)
         : Infinity
-    const fiveYearSavings = Math.max(
-      0,
-      yearlySavings * 5 - selectedMachine.price
-    )
 
-    // const totalCostComparison = []
-    // let coffeeShopCumulativeCost = 0
-    // let homeBaristaSetupCost = selectedMachine.price // Include initial machine cost
-    // let homeBaristaMaintenanceCost = 250 // Estimated yearly maintenance cost
-    // let homeBaristaReplacementCost = 0 // Cost to replace machine after 5 years
-    // let homeBaristaVariableCost = 0
+    // Calculate 5-year savings with machine replacement and inflation
+    let fiveYearSavings = 0
+    let inflatedYearlySpend = yearlySpend
+    let inflatedYearlySavings = yearlySavings
+    for (let year = 1; year <= 5; year++) {
+      fiveYearSavings += inflatedYearlySavings
+      inflatedYearlySpend *= 1 + inflationRate
+      inflatedYearlySavings = (inflatedYearlySpend / 12 - totalMonthlyCost) * 12
+    }
+    fiveYearSavings -= selectedMachine.price
 
-    // for (let year = 0; year <= 10; year++) {
-    //   coffeeShopCumulativeCost = yearlySpend * year
-    //   homeBaristaVariableCost =
-    //     (monthlySubscriptionCost + additionalCoffeeShopCost) * 12 * year
-
-    //   // Add maintenance cost each year
-    //   homeBaristaVariableCost += homeBaristaMaintenanceCost * year
-
-    //   // Replace machine after 5 years
-    //   if (year > 5) {
-    //     homeBaristaReplacementCost = selectedMachine.price
-    //   }
-
-    //   const homeBaristaTotal =
-    //     homeBaristaSetupCost +
-    //     homeBaristaVariableCost +
-    //     homeBaristaReplacementCost
-
-    //   totalCostComparison.push({
-    //     year,
-    //     'Coffee Shop': Math.round(coffeeShopCumulativeCost),
-    //     'Home Barista': Math.round(homeBaristaTotal),
-    //     'Cumulative Savings': Math.round(
-    //       coffeeShopCumulativeCost - homeBaristaTotal
-    //     )
-    //   })
-    // }
-
-    // setTotalCostComparison(totalCostComparison)
-
-    // Check if there are no savings and set a warning message
-    if (monthlySavings <= 0) {
-      setWarningMessage(
-        "Warning: With the current settings, you're not saving money. Consider adjusting your choices for potential savings."
-      )
-    } else {
-      setWarningMessage('')
+    // Calculate 10-year (lifetime) savings with machine replacement and inflation
+    let lifetimeSavings = 0
+    let lifetimeHomeBaristaInvestment = selectedMachine.price
+    inflatedYearlySpend = yearlySpend
+    inflatedYearlySavings = yearlySavings
+    for (let year = 1; year <= 10; year++) {
+      if (year % machineLifespan === 0) {
+        lifetimeHomeBaristaInvestment += selectedMachine.price
+      }
+      lifetimeSavings += inflatedYearlySavings
+      lifetimeHomeBaristaInvestment +=
+        monthlySubscriptionCost * 12 +
+        additionalCoffeeShopCost * 12 +
+        annualMaintenanceCost +
+        monthlyMilkCost * 12
+      inflatedYearlySpend *= 1 + inflationRate
+      inflatedYearlySavings = (inflatedYearlySpend / 12 - totalMonthlyCost) * 12
     }
 
-    const lifetimeCoffeeShopCost = yearlySpend * 10
-    const lifetimeHomeBaristaInvestment =
-      selectedMachine.price +
-      (monthlySubscriptionCost + additionalCoffeeShopCost) * 12 * 10
-    const lifetimeSavings = Math.max(
-      0,
-      lifetimeCoffeeShopCost - lifetimeHomeBaristaInvestment
-    )
+    const lifetimeCoffeeShopCost =
+      (yearlySpend * (Math.pow(1 + inflationRate, 10) - 1)) / inflationRate
 
-    const annualROI =
-      yearlySavings > 0
-        ? (yearlySavings /
-            (selectedMachine.price + monthlySubscriptionCost * 12)) *
-          100
-        : 0
+    // Calculate IRR (Internal Rate of Return) for more accurate ROI
+    const cashFlows = [-selectedMachine.price]
+    for (let i = 1; i <= 5; i++) {
+      cashFlows.push(yearlySavings * Math.pow(1 + inflationRate, i - 1))
+    }
+    const annualROI = IRR(cashFlows) * 100
 
     setResults({
       monthlySavings,
@@ -236,63 +273,81 @@ function SavingsCalculator() {
       lifetimeSavings,
       annualROI,
       cupsPerMonth,
-      additionalCoffeeShopVisits
+      additionalCoffeeShopVisits,
+      monthlyMilkCost
     })
 
-    const data = []
-    for (let year = 0; year <= 10; year++) {
-      const coffeeShopCost = yearlySpend * year
-      const homeBaristaInvestment =
-        selectedMachine.price +
-        (monthlySubscriptionCost + additionalCoffeeShopCost) * 12 * year
-      const homeBaristaInvestmentWithMachineReplacement =
-        homeBaristaInvestment + Math.floor(year / 5) * selectedMachine.price
-      const cumulativeSavings =
-        coffeeShopCost - homeBaristaInvestmentWithMachineReplacement
-      const yearlyROI =
-        year > 0
-          ? ((coffeeShopCost - homeBaristaInvestmentWithMachineReplacement) /
-              homeBaristaInvestmentWithMachineReplacement) *
-            100
-          : 0
+    if (monthlySavings <= 0) {
+      setWarningMessage(
+        "Warning: With the current settings, you're not saving money. Consider adjusting your choices for potential savings."
+      )
+    } else {
+      setWarningMessage('')
+    }
 
-      // Calculate monthly savings for each year, considering financing period
-      const monthlyMachineCostForYear =
-        year * 12 < financingMonths ? monthlyMachineCost : 0
-      const monthlySavingsForYear =
-        monthlySpend -
-        (monthlySubscriptionCost +
-          additionalCoffeeShopCost +
-          monthlyMachineCostForYear)
+    // Calculate chart data
+    const data = []
+    const totalCostComparisonData = []
+    let cumulativeSavings = 0
+    inflatedYearlySpend = yearlySpend
+    inflatedYearlySavings = yearlySavings
+    let homeBaristaInvestment = selectedMachine.price
+    for (let year = 0; year <= 10; year++) {
+      const coffeeShopCost = year === 0 ? 0 : inflatedYearlySpend
+      homeBaristaInvestment +=
+        year === 0
+          ? 0
+          : monthlySubscriptionCost * 12 +
+            additionalCoffeeShopCost * 12 +
+            annualMaintenanceCost +
+            monthlyMilkCost * 12
+      if (year > 0 && year % machineLifespan === 0) {
+        homeBaristaInvestment += selectedMachine.price
+      }
+      cumulativeSavings += year === 0 ? 0 : inflatedYearlySavings
+      const yearlyROI =
+        year === 0 ? 0 : (inflatedYearlySavings / homeBaristaInvestment) * 100
 
       data.push({
         year,
-        'Coffee Shop': coffeeShopCost,
-        'Home Barista': homeBaristaInvestmentWithMachineReplacement,
-        'Cumulative Savings': cumulativeSavings,
-        'Yearly ROI': yearlyROI,
-        'Monthly Savings': monthlySavingsForYear
+        'Coffee Shop': Math.round(coffeeShopCost),
+        'Home Barista': Math.round(homeBaristaInvestment),
+        'Cumulative Savings': Math.round(cumulativeSavings),
+        'Yearly ROI': yearlyROI.toFixed(2),
+        'Monthly Savings': (inflatedYearlySavings / 12).toFixed(2)
       })
+
+      totalCostComparisonData.push({
+        year,
+        'Coffee Shop': Math.round(coffeeShopCost),
+        'Home Barista': Math.round(homeBaristaInvestment),
+        'Cumulative Savings': Math.round(cumulativeSavings)
+      })
+
+      inflatedYearlySpend *= 1 + inflationRate
+      inflatedYearlySavings = (inflatedYearlySpend / 12 - totalMonthlyCost) * 12
     }
     setChartData(data)
-  }
-
-  useEffect(() => {
-    calculateSavings()
+    setTotalCostComparison(totalCostComparisonData)
   }, [
     dailySpend,
     daysPerWeek,
     selectedMachine,
     selectedTier,
     financingMonths,
-    calculateSavings
+    selectedMilk,
+    milkDeliveryFrequency
   ])
+
+  useEffect(() => {
+    calculateSavings()
+  }, [calculateSavings])
+
   const handleInputChange = (setter) => (e) => {
     const value =
       e.target.type === 'number' ? Number(e.target.value) : e.target.value
     setter(value)
   }
-
   return (
     <div className="calculator">
       <div className="calculator-content">
@@ -342,6 +397,41 @@ function SavingsCalculator() {
               />
             </div>
           </div>
+          <div className="input-group">
+            <label htmlFor="milk">BARISTA OAT & KOJI MILK Subscription</label>
+            <select
+              id="milk"
+              value={selectedMilk}
+              onChange={(e) => setSelectedMilk(e.target.value)}
+            >
+              {milkOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          {selectedMilk !== 'none' && (
+            <div className="input-group">
+              <label htmlFor="milkFrequency">
+                Milk Delivery Frequency (days)
+              </label>
+              <div className="input-wrapper">
+                <input
+                  type="range"
+                  id="milkFrequency"
+                  min="7"
+                  max="28"
+                  step="7"
+                  value={milkDeliveryFrequency}
+                  onChange={(e) =>
+                    setMilkDeliveryFrequency(Number(e.target.value))
+                  }
+                />
+                <span>{milkDeliveryFrequency} days</span>
+              </div>
+            </div>
+          )}
           <div className="input-group">
             <label htmlFor="machine">Preferred Breville machine</label>
             <select
@@ -476,12 +566,6 @@ function SavingsCalculator() {
           >
             Monthly Savings
           </button>
-          {/* <button
-            onClick={() => setActiveTab('totalCostOwnership')}
-            className={activeTab === 'totalCostOwnership' ? 'active' : ''}
-          >
-            Total Cost of Ownership
-          </button> */}
         </div>
 
         <div className="chart">
