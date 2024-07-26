@@ -29,7 +29,7 @@
     "@cloudinary/url-gen": "^1.13.0",
     "@codemirror/lang-json": "^6.0.1",
     "@codemirror/language": "^6.3.1",
-    "@coingecko/cryptoformat": "^0.5.4",
+    "@coingecko/cryptoformat": "^0.8.2",
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
     "@loadable/component": "^5.15.2",
