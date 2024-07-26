@@ -54,6 +54,7 @@
     "ethers": "^5.7.2",
     "filesize": "^10.0.7",
     "formik": "^2.4.2",
+    "framer-motion": "^11.3.17",
     "fuse.js": "^7.0.0",
     "gray-matter": "^4.0.3",
     "imagemin": "^8.0.1",
