@@ -62,7 +62,7 @@
     "is-ipfs": "^8.0.1",
     "is-url-superb": "^6.1.0",
     "js-cookie": "^3.0.1",
-    "marked": "^10.0.0",
+    "marked": "^14.1.0",
     "match-sorter": "^6.3.1",
     "material-ui": "^0.20.2",
     "myetherwallet-blockies": "^0.1.1",
